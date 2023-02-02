@@ -2,20 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace OthelloWinFormGame
 {
-    public class Cell
+    public class Cell 
     {
         private readonly int r_Row;
         private readonly int r_Col;
         private Player.eColor m_CurrentColor;
+        private PictureBox m_PictureBox;
 
 
         public Cell(int i_Row, int i_Col)
         {
             r_Row = i_Row;
             r_Col = i_Col;
+            m_PictureBox = new PictureBox();
+            m_PictureBox.Dock = DockStyle.Fill;
+            m_PictureBox.Size = new System.Drawing.Size(50, 50);
+            m_PictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
         public int Row
