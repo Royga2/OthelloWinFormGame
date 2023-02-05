@@ -68,5 +68,12 @@ namespace OthelloWinFormGame
         {
             return 12 * r_Row + r_Col;
         }
+
+        public override string ToString()
+        {
+            
+            string cellPos = $"{Row+1},{Col+1}";
+            return cellPos;
+        }
     }
 }
