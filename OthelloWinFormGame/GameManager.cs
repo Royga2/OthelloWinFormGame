@@ -23,7 +23,6 @@ namespace OthelloWinFormGame
 
             //TODO : Update bool acording to user choice
             //bool isComputer = inputGameMode();
-            Console.Clear();
             r_Player2 = new Player(r_Player1.PlayerColor, true);
             m_GameBoard = new Board(r_Player1.PlayerName, r_Player2.PlayerName);
             m_CurrentPlayer = r_Player1.PlayerColor == Player.eColor.Black ? r_Player1 : r_Player2;

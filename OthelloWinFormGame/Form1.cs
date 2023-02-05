@@ -13,14 +13,15 @@ namespace OthelloWinFormGame
     public partial class Form1 : Form
     {
         //private readonly TableLayoutPanel m_TableLayoutPanel = new TableLayoutPanel();
-        private readonly Board m_Board;
+        private readonly Board r_Board;
         private readonly int m_BoardSize;
         private readonly int m_PictureBoxSize = 50;
 
         public Form1(int i_BoardSize)
         {
+            m_BoardSize = i_BoardSize;
             InitializeComponent();
-            m_Board = new Board(i_BoardSize);
+            r_Board = new Board(i_BoardSize);
 
         }
 
@@ -31,28 +32,28 @@ namespace OthelloWinFormGame
 
         private void initializeTableLayoutPanel()
         {
-            tableLayoutPanel1.Dock = DockStyle.None;
-            tableLayoutPanel1.Height = this.Height - 80;
-            tableLayoutPanel1.Width = this.Width -60;
-            tableLayoutPanel1.Location = new Point(20, 20);
+            //tableLayoutPanel1.Dock = DockStyle.None;
+            //tableLayoutPanel1.Height = this.Height - 80;
+            //tableLayoutPanel1.Width = this.Width -60;
+            //tableLayoutPanel1.Location = new Point(20, 20);
             //tableLayoutPanel1.Margin = new Padding(30, 30, 30, 30);
             //tableLayoutPanel1.ColumnCount = m_Board.BoardSize;
             //tableLayoutPanel1.RowCount = m_Board.BoardSize;
             //tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-            tableLayoutPanel1.AutoSize = true;
+            //tableLayoutPanel1.AutoSize = true;
             //tableLayoutPanel1.AutoSize = true;
             //tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             //tableLayoutPanel1.Margin = new Padding(30, 30, 30, 30);
             //tableLayoutPanel1.Dock = DockStyle.Fill;
             //tableLayoutPanel1.ColumnCount = m_BoardSize;
             //tableLayoutPanel1.RowCount = m_BoardSize;
-            //for (int i = 0; i < m_BoardSize; i++)
-            //{
-            //tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100.0f / m_BoardSize));
-            //tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100.0f / m_BoardSize));
-            //}
+            for (int i = 0; i < m_BoardSize; i++)
+            {
+                tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100.0f / m_BoardSize));
+                tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100.0f / m_BoardSize));
+            }
 
-            foreach(Cell cell in m_Board.Cells)
+            foreach(Cell cell in r_Board.Cells)
             {
                 PictureBox pictureBox = new PictureBox();
                 //pictureBox.Location = new Point(cell.Col * m_PictureBoxSize, cell.Row * m_PictureBoxSize);
@@ -60,10 +61,14 @@ namespace OthelloWinFormGame
                 pictureBox.Size = new Size(m_PictureBoxSize, m_PictureBoxSize);
                 pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBox.Image = setImage(cell.CurrentColor);
-                if(cell.CurrentColor == Player.eColor.Green)
+                pictureBox.Click += PictureBox_Click;
+                if (cell.CurrentColor == Player.eColor.Green)
                 {
                     pictureBox.BackColor = Color.LimeGreen;
-                    pictureBox.Click += PictureBox_Click;
+                }
+                else
+                {
+                  pictureBox.Enabled = false;
                 }
 
                 cell.PictureBox = pictureBox;
@@ -88,7 +93,18 @@ namespace OthelloWinFormGame
         private void PictureBox_Click(object sender, EventArgs e)
         { 
             PictureBox mySender = sender as PictureBox;
-            MessageBox.Show(mySender.Location.ToString());
+
+            Cell cell = null;
+            foreach (Cell currentCell in r_Board.Cells)
+            {
+                if (currentCell.PictureBox == mySender)
+                {
+                    cell = currentCell;
+                    break;
+                }
+            }
+
+            MessageBox.Show(cell.ToString());
 
         }
 
