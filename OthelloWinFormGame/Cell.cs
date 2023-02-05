@@ -18,10 +18,10 @@ namespace OthelloWinFormGame
         {
             r_Row = i_Row;
             r_Col = i_Col;
-            m_PictureBox = new PictureBox();
-            m_PictureBox.Dock = DockStyle.Fill;
-            m_PictureBox.Size = new System.Drawing.Size(50, 50);
-            m_PictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            //m_PictureBox = new PictureBox();
+            //m_PictureBox.Dock = DockStyle.Fill;
+            //m_PictureBox.Size = new System.Drawing.Size(50, 50);
+            //m_PictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
         public int Row
@@ -44,6 +44,12 @@ namespace OthelloWinFormGame
         {
             get { return m_CurrentColor; }
             set { m_CurrentColor = value; }
+        }
+
+        public PictureBox PictureBox
+        {
+            get { return m_PictureBox; }
+            set { m_PictureBox = value; }
         }
 
         public override bool Equals(object i_Obj)
