@@ -20,9 +20,11 @@ namespace OthelloWinFormGame
         {
    
             r_Player1 = new Player();
-            bool isComputer = inputGameMode();
+
+            //TODO : Update bool acording to user choice
+            //bool isComputer = inputGameMode();
             Console.Clear();
-            r_Player2 = new Player(r_Player1.PlayerColor, isComputer);
+            r_Player2 = new Player(r_Player1.PlayerColor, true);
             m_GameBoard = new Board(r_Player1.PlayerName, r_Player2.PlayerName);
             m_CurrentPlayer = r_Player1.PlayerColor == Player.eColor.Black ? r_Player1 : r_Player2;
             m_PlayerLegalMove = findLegalMoves(m_CurrentPlayer);
@@ -53,7 +55,7 @@ namespace OthelloWinFormGame
             set { m_Winner = value; }
         }
 
-        // $G$ DSN-003 (-5) This method is too long.
+        
         public void PlayGame()
         {
             bool wantToPlay = true;
@@ -64,15 +66,15 @@ namespace OthelloWinFormGame
 
                     if (CurrentPlayer.IsComputer == false)
                     {
-                        string playerInputMove = MoveInput();
-                        if (playerInputMove[0] == 'Q')
+                        //string playerInputMove = MoveInput();
+                        //if (playerInputMove[0] == 'Q')
                         {
                             break;
                         }
 
-                        int[] userInput = getUserInputInInts(playerInputMove);
-                        Cell userCoicheCell = new Cell(userInput[0], userInput[1]);
-                        MakeMove(userCoicheCell);
+                        //int[] userInput = getUserInputInInts(playerInputMove);
+                        //Cell userCoicheCell = new Cell(userInput[0], userInput[1]);
+                        //MakeMove(userCoicheCell);
                     }
                     else
                     {
@@ -86,32 +88,26 @@ namespace OthelloWinFormGame
                 }
                 m_Winner = getWinnerPlayerName();
                 Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.BackgroundColor = ConsoleColor.DarkBlue;
                 Console.WriteLine(@"Game Over...
 The final score is:
 {0}(Black): {1} - {2}(White): {3}
 
 AND THE WINNER IS... *** {4} *** !!!
 ", r_Player1.PlayerName, m_GameBoard.BlackCount, r_Player2.PlayerName, m_GameBoard.WhiteCount, m_Winner);
-                Console.ResetColor();
                 Console.WriteLine(
                     @"Do you want a REMATCH?
 press 0 to end session or 1 to play again");
-                bool playRematch = inputGameMode();
-                if (playRematch == false)
+                //bool playRematch = inputGameMode();
+                //if (playRematch == false)
                 {
                     Console.Clear();
-                    Console.BackgroundColor = ConsoleColor.DarkRed;
-                    Console.ForegroundColor = ConsoleColor.White;
 
                     Console.WriteLine(@"Thank you for playing!
 Have a good day,
 Bye-Bye :)");
-                    Console.ResetColor();
                     wantToPlay = false;
                 }
-                else
+                //else
                 {
                     Console.Clear();
                     int currentBoardSize = m_GameBoard.BoardSize;
@@ -141,32 +137,32 @@ Bye-Bye :)");
             return true;
         }
 
-        private bool inputGameMode()
-        {
-            bool inputMode = false;
-            int userInput;
-            string inputString = Console.ReadLine();
-            while (!int.TryParse(inputString, out userInput) || (userInput != 0) && (userInput != 1))
-            {
-                Console.WriteLine("Invalid input, please try again, press 0 or 1 :");
-                inputString = Console.ReadLine();
-            }
+        //private bool inputGameMode()
+        //{
+        //    bool inputMode = false;
+        //    int userInput;
+        //    string inputString = Console.ReadLine();
+        //    while (!int.TryParse(inputString, out userInput) || (userInput != 0) && (userInput != 1))
+        //    {
+        //        Console.WriteLine("Invalid input, please try again, press 0 or 1 :");
+        //        inputString = Console.ReadLine();
+        //    }
 
-            if (userInput != 0)
-            {
-                inputMode = true;
-            }
+        //    if (userInput != 0)
+        //    {
+        //        inputMode = true;
+        //    }
 
-            return inputMode;
-        }
+        //    return inputMode;
+        //}
 
-        private int[] getUserInputInInts(string i_UserInput)
-        {
-            int[] intArray = new int[2];
-            intArray[0] = int.Parse(i_UserInput[0].ToString()) - 1;
-            intArray[1] = Convert.ToInt32(i_UserInput[1]) - 'A';
-            return intArray;
-        }
+        //private int[] getUserInputInInts(string i_UserInput)
+        //{
+        //    int[] intArray = new int[2];
+        //    intArray[0] = int.Parse(i_UserInput[0].ToString()) - 1;
+        //    intArray[1] = Convert.ToInt32(i_UserInput[1]) - 'A';
+        //    return intArray;
+        //}
 
         public Player CurrentPlayer
         {
@@ -180,7 +176,7 @@ Bye-Bye :)");
             set { m_PlayerLegalMove = value; }
         }
 
-        // $G$ CSS-028 (-5) A method should not include more than one return statement.
+        //TODO : NEED TO Fiz func to have only 1 return! 
         private List<Cell> capturbaleCellsInline(Cell i_Cell, Player i_Player, int i_RowOffSet, int i_ColOffSet)
         {
             List<Cell> capturbaleCells = new List<Cell>();
@@ -288,10 +284,7 @@ Bye-Bye :)");
                 return;
             }
 
-            Console.BackgroundColor = ConsoleColor.DarkRed;
-            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(@"{0} you don't have any legal move your turn is skipped", m_CurrentPlayer.PlayerName);
-            Console.ResetColor();
             switchPlayer();
 
             if (m_PlayerLegalMove.Count == 0)
@@ -327,67 +320,68 @@ Bye-Bye :)");
             return legalMoves;
         }
 
-        public bool IsValidSyntaxMove(string i_MoveString)
-        {
-            bool isValid = true;
-            if (i_MoveString.Length == 0)
-            {
-                isValid = false;
-            }
-            else if ((i_MoveString[0] == 'Q' || i_MoveString[0] == 'q') && i_MoveString.Length == 1)
-            {
-                m_GameOver = true;
-            }
-            else if (i_MoveString.Length != 2)
-            {
-                isValid = false;
-            }
-            else
-            {
-                int gameBoardSize = m_GameBoard.BoardSize;
-                char charLetter = char.ToUpper(i_MoveString[1]);
-                char charNumber = i_MoveString[0];
 
-                if (!char.IsLetter(charLetter))
-                {
-                    isValid = false;
-                }
+//        public bool IsValidSyntaxMove(string i_MoveString)
+//        {
+//            bool isValid = true;
+//            if (i_MoveString.Length == 0)
+//            {
+//                isValid = false;
+//            }
+//            else if ((i_MoveString[0] == 'Q' || i_MoveString[0] == 'q') && i_MoveString.Length == 1)
+//            {
+//                m_GameOver = true;
+//            }
+//            else if (i_MoveString.Length != 2)
+//            {
+//                isValid = false;
+//            }
+//            else
+//            {
+//                int gameBoardSize = m_GameBoard.BoardSize;
+//                char charLetter = char.ToUpper(i_MoveString[1]);
+//                char charNumber = i_MoveString[0];
 
-                if (!char.IsNumber(charNumber))
-                {
-                    isValid = false;
-                }
+//                if (!char.IsLetter(charLetter))
+//                {
+//                    isValid = false;
+//                }
 
-                if (charLetter < 'A' || charLetter > 'A' + gameBoardSize)
-                {
-                    isValid = false;
-                }
+//                if (!char.IsNumber(charNumber))
+//                {
+//                    isValid = false;
+//                }
 
-                if (charNumber < '0' || charNumber > (char)gameBoardSize + '0')
-                {
-                    isValid = false;
-                }
-            }
+//                if (charLetter < 'A' || charLetter > 'A' + gameBoardSize)
+//                {
+//                    isValid = false;
+//                }
 
-            return isValid;
-        }
+//                if (charNumber < '0' || charNumber > (char)gameBoardSize + '0')
+//                {
+//                    isValid = false;
+//                }
+//            }
 
-        public string MoveInput()
-        {
-            Console.WriteLine(@"
-Please enter your move (Number for Row and then Letter for Col):");
-            string playerMove = (Console.ReadLine());
+//            return isValid;
+//        }
 
-            while (IsValidSyntaxMove(playerMove) == false)
-            {
-                Console.WriteLine("This is invalid syntax, please try again:");
-                playerMove = Console.ReadLine();
+//        public string MoveInput()
+//        {
+//            Console.WriteLine(@"
+//Please enter your move (Number for Row and then Letter for Col):");
+//            string playerMove = (Console.ReadLine());
 
-            }
-            playerMove = playerMove.ToUpper();
+//            while (IsValidSyntaxMove(playerMove) == false)
+//            {
+//                Console.WriteLine("This is invalid syntax, please try again:");
+//                playerMove = Console.ReadLine();
 
-            return playerMove;
-        }
+//            }
+//            playerMove = playerMove.ToUpper();
+
+//            return playerMove;
+//        }
     }
 }
 
