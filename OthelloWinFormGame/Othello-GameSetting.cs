@@ -16,8 +16,18 @@ namespace OthelloWinFormGame
         public Othello_GameSetting()
         {
             InitializeComponent();
+            //.FormClosed += ExitApp;
+            //if (CancelButton.DialogResult == DialogResult.Cancel)
+            //{
+            //    Application.Exit();
+            //}
         }
 
+        //private void ExitApp(object sender, FormClosedEventArgs e)
+        //{
+        //    if (e.CloseReason == CloseReason.ca)
+        //    Application.Exit();
+        //}
         private void Othello_GameSetting_Load(object sender, EventArgs e)
         {
 
@@ -37,14 +47,49 @@ namespace OthelloWinFormGame
             buttonBoardSize.Text = buttonBoardSizeTitle;
         }
 
+
         private void buttonPlayCPU_Click(object sender, EventArgs e)
         {
             m_IsAgainstComputer = true;
+            //Close();
         }
 
         private void buttonPVP_Click(object sender, EventArgs e)
         {
             m_IsAgainstComputer = false;
+            //Close();
         }
+
+        public Button ButtonPVP
+        {
+            get
+            {
+                return this.buttonPVP;
+            }
+        }
+        public Button ButtonPlayCPU
+        {
+            get
+            {
+                return this.buttonPlayCPU;
+            }
+        }
+
+        public int BoardSize
+        {
+            get
+            {
+                return m_BoardSize;
+            }
+        }
+
+        public bool IsAgainstComputer
+        {
+            get
+            {
+                return m_IsAgainstComputer;
+            }
+        }
+
     }
 }

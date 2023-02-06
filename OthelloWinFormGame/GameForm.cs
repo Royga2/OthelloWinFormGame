@@ -67,16 +67,17 @@ namespace OthelloWinFormGame
                 pictureBox.Dock = DockStyle.Fill;
                 pictureBox.Size = new Size(k_PictureBoxSize, k_PictureBoxSize);
                 pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                pictureBox.Image = setImage(cell.CurrentColor);
+                //pictureBox.Image = setImage(cell.CurrentColor);
+                pictureBox.Image = null;
                 pictureBox.Click += PictureBox_Click;
-                if (cell.CurrentColor == Player.eColor.Green)
-                {
-                    pictureBox.BackColor = Color.LimeGreen;
-                }
-                else
-                {
-                  pictureBox.Enabled = false;
-                }
+                //if (cell.CurrentColor == Player.eColor.Green)
+                //{
+                //    pictureBox.BackColor = Color.LimeGreen;
+                //}
+                //else
+                //{
+                //  pictureBox.Enabled = false;
+                //}
                 int row = tableLayoutPanel1.GetRow(control);
                 int col = tableLayoutPanel1.GetColumn(control);
                 ///cell.PictureBox = pictureBox;
@@ -105,6 +106,9 @@ namespace OthelloWinFormGame
 
         }
 
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
 
+        }
     }
 }

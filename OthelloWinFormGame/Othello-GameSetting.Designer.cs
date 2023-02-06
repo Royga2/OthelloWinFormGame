@@ -77,6 +77,7 @@ namespace OthelloWinFormGame
             this.MinimizeBox = false;
             this.Name = "Othello_GameSetting";
             this.RightToLeftLayout = true;
+            this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Othello-Game Setting";

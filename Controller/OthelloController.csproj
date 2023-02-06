@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Controller.cs" />
+    <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OthelloLogic\OthelloLogic.csproj">
@@ -46,6 +47,9 @@
       <Project>{8af9bdc1-d54a-4bee-9c07-1564d607c038}</Project>
       <Name>OthelloWinFormGame</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
