@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
-namespace OthelloWinFormGame
+namespace OthelloLogic
 {
     public class Cell 
     {
         private readonly int r_Row;
         private readonly int r_Col;
         private Player.eColor m_CurrentColor;
-        private PictureBox m_PictureBox;
 
 
         public Cell(int i_Row, int i_Col)
@@ -46,11 +44,6 @@ namespace OthelloWinFormGame
             set { m_CurrentColor = value; }
         }
 
-        public PictureBox PictureBox
-        {
-            get { return m_PictureBox; }
-            set { m_PictureBox = value; }
-        }
 
         public override bool Equals(object i_Obj)
         {

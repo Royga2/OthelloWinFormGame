@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OthelloWinFormGame
+namespace OthelloLogic
 {
     public class Player
     {

@@ -15,7 +15,7 @@ namespace OthelloWinFormGame
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1(6));
+            Application.Run(new GameForm(6,true));
         }
     }
 }

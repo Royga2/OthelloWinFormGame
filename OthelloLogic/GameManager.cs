@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OthelloWinFormGame
+namespace OthelloLogic
 {
     public class GameManager
     {
@@ -16,15 +16,15 @@ namespace OthelloWinFormGame
         private string m_Winner;
 
 
-        public GameManager()
+        public GameManager(int i_BoardSize, bool i_IsComputer)
         {
    
             r_Player1 = new Player();
 
             //TODO : Update bool acording to user choice
             //bool isComputer = inputGameMode();
-            r_Player2 = new Player(r_Player1.PlayerColor, true);
-            m_GameBoard = new Board(r_Player1.PlayerName, r_Player2.PlayerName);
+            r_Player2 = new Player(r_Player1.PlayerColor, i_IsComputer);
+            m_GameBoard = new Board(i_BoardSize);
             m_CurrentPlayer = r_Player1.PlayerColor == Player.eColor.Black ? r_Player1 : r_Player2;
             m_PlayerLegalMove = findLegalMoves(m_CurrentPlayer);
             PlayGame();
@@ -40,6 +40,12 @@ namespace OthelloWinFormGame
             m_PlayerLegalMove = findLegalMoves(m_CurrentPlayer);
             PlayGame();
 
+        }
+
+        public Board GameBoard
+        {
+            get { return m_GameBoard; }
+            //set { m_GameBoard = value; }
         }
 
         public bool GameOver
@@ -67,9 +73,6 @@ namespace OthelloWinFormGame
                     {
                         //string playerInputMove = MoveInput();
                         //if (playerInputMove[0] == 'Q')
-                        {
-                            break;
-                        }
 
                         //int[] userInput = getUserInputInInts(playerInputMove);
                         //Cell userCoicheCell = new Cell(userInput[0], userInput[1]);
@@ -77,8 +80,8 @@ namespace OthelloWinFormGame
                     }
                     else
                     {
-                        Console.WriteLine("Press any key to continue...");
-                        Console.ReadKey();
+                        //Console.WriteLine("Press any key to continue...");
+                        //Console.ReadKey();
                         Random randomMove = new Random();
                         ICollection<Cell> keys = m_PlayerLegalMove.Keys;
                         Cell randomKey = keys.ElementAt(randomMove.Next(keys.Count));
@@ -86,29 +89,27 @@ namespace OthelloWinFormGame
                     }
                 }
                 m_Winner = getWinnerPlayerName();
-                Console.Clear();
-                Console.WriteLine(@"Game Over...
-The final score is:
-{0}(Black): {1} - {2}(White): {3}
+//                Console.WriteLine(@"Game Over...
+//The final score is:
+//{0}(Black): {1} - {2}(White): {3}
 
-AND THE WINNER IS... *** {4} *** !!!
-", r_Player1.PlayerName, m_GameBoard.BlackCount, r_Player2.PlayerName, m_GameBoard.WhiteCount, m_Winner);
-                Console.WriteLine(
-                    @"Do you want a REMATCH?
-press 0 to end session or 1 to play again");
+//AND THE WINNER IS... *** {4} *** !!!
+//", r_Player1.PlayerName, m_GameBoard.BlackCount, r_Player2.PlayerName, m_GameBoard.WhiteCount, m_Winner);
+//                Console.WriteLine(
+//                    @"Do you want a REMATCH?
+//press 0 to end session or 1 to play again");
                 //bool playRematch = inputGameMode();
                 //if (playRematch == false)
                 {
-                    Console.Clear();
 
-                    Console.WriteLine(@"Thank you for playing!
-Have a good day,
-Bye-Bye :)");
+//                    Console.WriteLine(@"Thank you for playing!
+//Have a good day,
+//Bye-Bye :)");
                     wantToPlay = false;
                 }
                 //else
                 {
-                    Console.Clear();
+                
                     int currentBoardSize = m_GameBoard.BoardSize;
                     m_GameBoard = new Board(currentBoardSize, r_Player1.PlayerName, r_Player2.PlayerName);
                     m_GameOver = false;
@@ -130,7 +131,6 @@ Bye-Bye :)");
             m_GameBoard.Cells[i_Cell.Row, i_Cell.Col].CurrentColor = CurrentPlayer.PlayerColor;
             flipDiscs(capturbaleCells);
             m_GameBoard.UpdatesScore(movePlayer, capturbaleCells.Count);
-            Console.Clear();
             passTurn();
             //m_GameBoard.DisplayBoard(r_Player1.PlayerName, r_Player2.PlayerName, m_CurrentPlayer.PlayerName);
             return true;
@@ -283,7 +283,7 @@ Bye-Bye :)");
                 return;
             }
 
-            Console.WriteLine(@"{0} you don't have any legal move your turn is skipped", m_CurrentPlayer.PlayerName);
+            //MessageBox.Show(@"{0} you don't have any legal move your turn is skipped", m_CurrentPlayer.PlayerName);
             switchPlayer();
 
             if (m_PlayerLegalMove.Count == 0)
