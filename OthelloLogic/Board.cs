@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OthelloWinFormGame
+namespace OthelloLogic
 {
     public class Board
     {
@@ -28,17 +28,12 @@ namespace OthelloWinFormGame
                 }
             }
 
-            r_Cells[r_BoardSize / 2 - 1, r_BoardSize / 2 - 1].CurrentColor = Player.eColor.White;
-            r_Cells[r_BoardSize / 2, r_BoardSize / 2].CurrentColor = Player.eColor.White;
-            r_Cells[r_BoardSize / 2 - 1, r_BoardSize / 2].CurrentColor = Player.eColor.Black;
-            r_Cells[r_BoardSize / 2, r_BoardSize / 2 - 1].CurrentColor = Player.eColor.Black;
-            r_Cells[r_BoardSize / 2 - 2, r_BoardSize / 2 - 1].CurrentColor = Player.eColor.Green;
-            r_Cells[r_BoardSize / 2 - 1, r_BoardSize / 2 - 2].CurrentColor = Player.eColor.Green;
-            r_Cells[r_BoardSize / 2, r_BoardSize / 2 + 1].CurrentColor = Player.eColor.Green;
-            r_Cells[r_BoardSize / 2 + 1, r_BoardSize / 2].CurrentColor = Player.eColor.Green;
+            initializedCells();
+
             //DisplayBoard("Player1", "Player2", "Player");
         }
 
+      
         public Board(string i_FirstPlayerName, string i_SecondPlayerName)
         {
             //r_BoardSize = GetValidBoardSize();
@@ -54,10 +49,7 @@ namespace OthelloWinFormGame
                 }
             }
 
-            r_Cells[(r_BoardSize / 2) - 1, r_BoardSize / 2 - 1].CurrentColor = Player.eColor.White;
-            r_Cells[r_BoardSize / 2, r_BoardSize / 2].CurrentColor = Player.eColor.White;
-            r_Cells[r_BoardSize / 2 - 1, r_BoardSize / 2].CurrentColor = Player.eColor.Black;
-            r_Cells[r_BoardSize / 2, r_BoardSize / 2 - 1].CurrentColor = Player.eColor.Black;
+            initializedCells();
             //DisplayBoard(i_FirstPlayerName, i_SecondPlayerName, i_FirstPlayerName);
         }
 
@@ -77,11 +69,20 @@ namespace OthelloWinFormGame
                 }
             }
 
-            r_Cells[(r_BoardSize / 2) - 1, r_BoardSize / 2 - 1].CurrentColor = Player.eColor.White;
+            initializedCells();
+           //DisplayBoard(i_FirstPlayerName, i_SecondPlayerName, i_FirstPlayerName);
+        }
+
+        private void initializedCells()
+        {
+            r_Cells[r_BoardSize / 2 - 1, r_BoardSize / 2 - 1].CurrentColor = Player.eColor.White;
             r_Cells[r_BoardSize / 2, r_BoardSize / 2].CurrentColor = Player.eColor.White;
             r_Cells[r_BoardSize / 2 - 1, r_BoardSize / 2].CurrentColor = Player.eColor.Black;
             r_Cells[r_BoardSize / 2, r_BoardSize / 2 - 1].CurrentColor = Player.eColor.Black;
-            //DisplayBoard(i_FirstPlayerName, i_SecondPlayerName, i_FirstPlayerName);
+            r_Cells[r_BoardSize / 2 - 2, r_BoardSize / 2 - 1].CurrentColor = Player.eColor.Green;
+            r_Cells[r_BoardSize / 2 - 1, r_BoardSize / 2 - 2].CurrentColor = Player.eColor.Green;
+            r_Cells[r_BoardSize / 2, r_BoardSize / 2 + 1].CurrentColor = Player.eColor.Green;
+            r_Cells[r_BoardSize / 2 + 1, r_BoardSize / 2].CurrentColor = Player.eColor.Green;
         }
 
         public Cell[,] Cells
