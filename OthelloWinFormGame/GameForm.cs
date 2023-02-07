@@ -33,6 +33,7 @@ namespace OthelloWinFormGame
 
         private void initializeTableLayoutPanel()
         {
+            tableLayoutPanel1.AutoSize = false;
             tableLayoutPanel1.Dock = DockStyle.None;
             tableLayoutPanel1.Height = this.Height - 80;
             tableLayoutPanel1.Width = this.Width -60;
@@ -41,7 +42,6 @@ namespace OthelloWinFormGame
             //tableLayoutPanel1.ColumnCount = m_Board.BoardSize;
             //tableLayoutPanel1.RowCount = m_Board.BoardSize;
             tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-            //tableLayoutPanel1.AutoSize = false;
             //tableLayoutPanel1.AutoSize = true;
             //tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             //tableLayoutPanel1.Margin = new Padding(30, 30, 30, 30);
