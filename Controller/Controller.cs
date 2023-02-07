@@ -106,18 +106,17 @@ namespace OthelloController
         public void OnClickMoveHandler(int i_Row, int i_Col)
         {
             Cell CurrentMove = new Cell(i_Row, i_Col);
-            if (r_GameManager.CurrentPlayer.IsComputer == false)
-            {
-                r_GameManager.MakeMove(CurrentMove);
-                UpdateUIBoard();
-                m_UIManager.GameForm.ChangeGameFormTitle(r_GameManager.CurrentPlayer.PlayerColor.ToString());
-            }
-            else
+            r_GameManager.MakeMove(CurrentMove);
+            UpdateUIBoard();
+            m_UIManager.GameForm.ChangeGameFormTitle(r_GameManager.CurrentPlayer.PlayerColor.ToString());
+
+            if (r_GameManager.CurrentPlayer.IsComputer == true)
             {
                 Random randomMove = new Random();
                 ICollection<Cell> keys = r_GameManager.PlayerLegalMove.Keys;
                 Cell randomKey = keys.ElementAt(randomMove.Next(keys.Count));
                 r_GameManager.MakeMove(randomKey);
+                m_UIManager.GameForm.ChangeGameFormTitle(r_GameManager.CurrentPlayer.PlayerColor.ToString());
             }
 
         }
