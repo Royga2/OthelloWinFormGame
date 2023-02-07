@@ -21,18 +21,11 @@ namespace OthelloLogic
         {
    
             r_Player1 = new Player();
-
-            //TODO : Update bool acording to user choice
-            //bool isComputer = inputGameMode();
             r_Player2 = new Player(r_Player1.PlayerColor, i_IsComputer);
             m_GameBoard = new Board(i_BoardSize);
             m_CurrentPlayer = r_Player1.PlayerColor == Player.eColor.Black ? r_Player1 : r_Player2;
             m_PlayerLegalMove = findLegalMoves(m_CurrentPlayer);
-            //foreach (Cell currentCell in m_PlayerLegalMove.Keys)
-            //{
-            //    m_GameBoard.Cells[currentCell.Row, currentCell.Col].CurrentColor = Player.eColor.Green;
-            //}
-            //PlayGame();
+
         }
 
         //for test purpeses
@@ -183,7 +176,7 @@ namespace OthelloLogic
             m_PlayerLegalMove = findLegalMoves(CurrentPlayer);
         }
 
-        private string getWinnerPlayerName()
+        public string GetWinnerPlayerName()
         {
             string winnerName = "NO ONE :(";
             if (m_GameBoard.BlackCount > m_GameBoard.WhiteCount)
@@ -234,10 +227,7 @@ namespace OthelloLogic
                 for (int col = 0; col < m_GameBoard.BoardSize; col++)
                 {
                     Cell cellToAdd = new Cell(row, col);
-                    //if (m_GameBoard.Cells[row, col].CurrentColor == Player.eColor.Green)
-                    //{
-                    //    m_GameBoard.Cells[row, col].CurrentColor = Player.eColor.None;
-                    //}
+               
                     if (isMoveLegal(i_Player, cellToAdd, out List<Cell> capturbaleCells))
                     {
                         legalMoves[cellToAdd] = capturbaleCells;
@@ -249,67 +239,6 @@ namespace OthelloLogic
         }
 
 
-//        public bool IsValidSyntaxMove(string i_MoveString)
-//        {
-//            bool isValid = true;
-//            if (i_MoveString.Length == 0)
-//            {
-//                isValid = false;
-//            }
-//            else if ((i_MoveString[0] == 'Q' || i_MoveString[0] == 'q') && i_MoveString.Length == 1)
-//            {
-//                m_GameOver = true;
-//            }
-//            else if (i_MoveString.Length != 2)
-//            {
-//                isValid = false;
-//            }
-//            else
-//            {
-//                int gameBoardSize = m_GameBoard.BoardSize;
-//                char charLetter = char.ToUpper(i_MoveString[1]);
-//                char charNumber = i_MoveString[0];
-
-//                if (!char.IsLetter(charLetter))
-//                {
-//                    isValid = false;
-//                }
-
-//                if (!char.IsNumber(charNumber))
-//                {
-//                    isValid = false;
-//                }
-
-//                if (charLetter < 'A' || charLetter > 'A' + gameBoardSize)
-//                {
-//                    isValid = false;
-//                }
-
-//                if (charNumber < '0' || charNumber > (char)gameBoardSize + '0')
-//                {
-//                    isValid = false;
-//                }
-//            }
-
-//            return isValid;
-//        }
-
-//        public string MoveInput()
-//        {
-//            Console.WriteLine(@"
-//Please enter your move (Number for Row and then Letter for Col):");
-//            string playerMove = (Console.ReadLine());
-
-//            while (IsValidSyntaxMove(playerMove) == false)
-//            {
-//                Console.WriteLine("This is invalid syntax, please try again:");
-//                playerMove = Console.ReadLine();
-
-//            }
-//            playerMove = playerMove.ToUpper();
-
-//            return playerMove;
-//        }
     }
 }
 

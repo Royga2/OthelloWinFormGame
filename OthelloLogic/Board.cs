@@ -30,13 +30,11 @@ namespace OthelloLogic
 
             initializedCells();
 
-            //DisplayBoard("Player1", "Player2", "Player");
         }
 
       
         public Board(string i_FirstPlayerName, string i_SecondPlayerName)
         {
-            //r_BoardSize = GetValidBoardSize();
             r_Cells = new Cell[r_BoardSize, r_BoardSize];
             m_BlackCount = 2;
             m_WhiteCount = 2;
@@ -50,7 +48,6 @@ namespace OthelloLogic
             }
 
             initializedCells();
-            //DisplayBoard(i_FirstPlayerName, i_SecondPlayerName, i_FirstPlayerName);
         }
 
         //for test purpeses
@@ -70,7 +67,6 @@ namespace OthelloLogic
             }
 
             initializedCells();
-           //DisplayBoard(i_FirstPlayerName, i_SecondPlayerName, i_FirstPlayerName);
         }
 
         private void initializedCells()

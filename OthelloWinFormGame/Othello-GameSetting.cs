@@ -13,21 +13,32 @@ namespace OthelloWinFormGame
     {
         int m_BoardSize = 6;
         bool m_IsAgainstComputer;
+        public event FormClosingEventHandler OnSettingFormClosing;
+
         public Othello_GameSetting()
         {
             InitializeComponent();
+            FormClosing += FormSetting_FormClosing;
             //.FormClosed += ExitApp;
             //if (CancelButton.DialogResult == DialogResult.Cancel)
             //{
             //    Application.Exit();
             //}
         }
+      
+            private void FormSetting_FormClosing(object sender, FormClosingEventArgs e)
+            {
+                if (OnSettingFormClosing != null)
+                {
+                    OnSettingFormClosing(sender, e);
+                }
+            }
 
-        //private void ExitApp(object sender, FormClosedEventArgs e)
-        //{
-        //    if (e.CloseReason == CloseReason.ca)
-        //    Application.Exit();
-        //}
+            public void ExitApp(object sender, FormClosedEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+                Environment.Exit(0);
+        }
         private void Othello_GameSetting_Load(object sender, EventArgs e)
         {
 
@@ -47,7 +58,6 @@ namespace OthelloWinFormGame
             buttonBoardSize.Text = buttonBoardSizeTitle;
         }
 
-
         private void buttonPlayCPU_Click(object sender, EventArgs e)
         {
             m_IsAgainstComputer = true;
@@ -62,33 +72,22 @@ namespace OthelloWinFormGame
 
         public Button ButtonPVP
         {
-            get
-            {
-                return this.buttonPVP;
-            }
+            get { return this.buttonPVP; }
         }
+
         public Button ButtonPlayCPU
         {
-            get
-            {
-                return this.buttonPlayCPU;
-            }
+            get { return this.buttonPlayCPU; }
         }
 
         public int BoardSize
         {
-            get
-            {
-                return m_BoardSize;
-            }
+            get { return m_BoardSize; }
         }
 
         public bool IsAgainstComputer
         {
-            get
-            {
-                return m_IsAgainstComputer;
-            }
+            get { return m_IsAgainstComputer; }
         }
 
     }
