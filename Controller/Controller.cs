@@ -50,72 +50,92 @@ namespace OthelloController
                 m_UIManager.GameForm.UpdateTablePictureBox("Green", currentCell.Row, currentCell.Col);
             }
         }
-        
+
+        private void startAnotherRound()
+        {
+            m_UIManager.GameForm = new GameForm(m_BoardSize);
+            m_GameOn = true;
+            m_GameManager.IsGameOver += OnGameOver;
+            m_UIManager.GameForm.OnPictureBoxClicked += OnClickMoveHandler;
+            UpdateUIBoard();
+        }
+
         public void PlayGame()
         {
             while (m_GameOn == true)
             {
+                
                 if (m_UIManager.GameForm == null || m_UIManager.GameForm.IsDisposed)
                 {
-                    m_UIManager.GameForm = new GameForm(m_BoardSize);
+                    startAnotherRound();
+                    
                 }
                 
-                if (m_UIManager.GameForm.ShowDialog() == DialogResult.Cancel)
+                else if (m_UIManager.GameForm.ShowDialog() == DialogResult.Cancel)
                 {
                     break;
                 }
             }
         }
 
-
-        public void OnClickMoveHandler(int i_Row, int i_Col)
+        private void playerMove(int i_Row, int i_Col)
         {
             Cell currentMove = new Cell(i_Row, i_Col);
             m_GameManager.MakeMove(currentMove);
             UpdateUIBoard();
             m_UIManager.GameForm.ChangeGameFormTitle(m_GameManager.CurrentPlayer.PlayerColor.ToString());
+        }
+
+        private void cpuMove()
+        {
+            Random randomMove = new Random();
+            ICollection<Cell> keys = m_GameManager.PlayerLegalMove.Keys;
+            Cell randomKey = keys.ElementAt(randomMove.Next(keys.Count));
+            m_GameManager.MakeMove(randomKey);
+            UpdateUIBoard();
+            m_UIManager.GameForm.ChangeGameFormTitle(m_GameManager.CurrentPlayer.PlayerName.ToString());
+        }
+
+        public void OnClickMoveHandler(int i_Row, int i_Col)
+        {
+            playerMove(i_Row, i_Col);
 
             if (m_GameManager.CurrentPlayer.IsComputer == true)
             {
-                Random randomMove = new Random();
-                ICollection<Cell> keys = m_GameManager.PlayerLegalMove.Keys;
-                Cell randomKey = keys.ElementAt(randomMove.Next(keys.Count));
-                m_GameManager.MakeMove(randomKey);
-                UpdateUIBoard();
-                m_UIManager.GameForm.ChangeGameFormTitle(m_GameManager.CurrentPlayer.PlayerName.ToString());
+                cpuMove();
             }
 
         }
 
-        public void GetLegalMoves()
+        private string updateRoundWinner()
         {
-            Dictionary<Cell, List<Cell>> currentLegalMoves = m_GameManager.LegalMoves;
-        }
-
-        private void updateRoundWinner()
-        {
-            if(m_GameManager.GetWinnerPlayerName() == "Black")
+            string roundWinner = m_GameManager.GetWinnerPlayerName();
+            if (roundWinner == "Black")
             {
                 m_Player1Wins += 1;
             }
-            else
+            else if (roundWinner == "White")
             {
                 m_Player2Wins += 1;
             }
+
+            return roundWinner;
         }
-        private void OnGameOver(object sender, EventArgs e)
+
+        private string endRoundAndReturnWinnerName()
         {
+            string roundWinner = updateRoundWinner();
             UpdateUIBoard();
-            updateRoundWinner();
             m_GameOn = false;
             m_GameManager.IsGameOver -= OnGameOver;
             m_UIManager.GameForm.OnPictureBoxClicked -= OnClickMoveHandler;
-            
-            string endGameMessage = string.Format(@"{0} Won!! ({1}/{2}) ({3}/{4})
-Would you like another round?", m_GameManager.GetWinnerPlayerName(), m_GameManager.GameBoard.BlackCount, m_GameManager.GameBoard.WhiteCount, m_Player1Wins, m_Player2Wins);
-            //MessageBox.Show(endGameMessage);
-            m_UIManager.GameForm.Dispose();
-            DialogResult result = MessageBox.Show(endGameMessage, "Othello", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+
+            return roundWinner;
+        }
+
+        private void gameOverMessageBox(string i_Message)
+        {
+            DialogResult result = MessageBox.Show(i_Message, "Othello", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
 
             if (result == DialogResult.OK)
             {
@@ -125,6 +145,16 @@ Would you like another round?", m_GameManager.GetWinnerPlayerName(), m_GameManag
             {
                 Environment.Exit(0);
             }
+        }
+        private void OnGameOver(object sender, EventArgs e)
+        {
+            string roundWinnerName = endRoundAndReturnWinnerName();
+            string endGameMessage = string.Format(@"{0} Won!! ({1}/{2}) ({3}/{4})
+Would you like another round?", roundWinnerName, m_GameManager.GameBoard.BlackCount, m_GameManager.GameBoard.WhiteCount, m_Player1Wins, m_Player2Wins);
+            m_UIManager.GameForm.Dispose();
+            gameOverMessageBox(endGameMessage);
+
+
         }
     }
 }
