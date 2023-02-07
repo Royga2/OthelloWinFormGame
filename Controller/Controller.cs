@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using OthelloLogic;
 using OthelloWinFormGame;
+using System.Windows.Forms;
 
 namespace OthelloController
 {
@@ -12,7 +13,10 @@ namespace OthelloController
         private readonly GameManager r_GameManager;
         private int m_BoardSize;
         bool m_IsComputer;
-        private UIManager m_UIManager; 
+        private UIManager m_UIManager;
+        bool m_GameOn;
+        int m_Player1Wins = 0;
+        int m_Player2Wins = 0;
 
         public Controller()
         {
@@ -20,11 +24,11 @@ namespace OthelloController
             m_BoardSize = m_UIManager.GameSettingForm.BoardSize;
             m_IsComputer = m_UIManager.GameSettingForm.IsAgainstComputer;
             r_GameManager = new GameManager(m_BoardSize, m_IsComputer);
+            m_GameOn = true;
 
-
+            r_GameManager.IsGameOver += OnGameOver;
             m_UIManager.GameForm.OnPictureBoxClicked += OnClickMoveHandler;
             UpdateUIBoard();
-            //m_UIManager.StartGameDialog();
             PlayGame();
         }
 
@@ -45,61 +49,12 @@ namespace OthelloController
 
         public void PlayGame()
         {
-            bool wantToPlay = true;
-            while (wantToPlay)
+            while (m_GameOn == true)
             {
-                m_UIManager.StartGameDialog();
-                while (r_GameManager.GameOver == false)
+                if (m_UIManager.GameForm.ShowDialog() == DialogResult.Cancel)
                 {
-                    if (r_GameManager.CurrentPlayer.IsComputer == false)
-                    {
-                        //m_UIManager.GameForm.PictureBox_Click += ;
-                        //string playerInputMove = MoveInput();
-                        //if (playerInputMove[0] == 'Q')
-
-                        //int[] userInput = getUserInputInInts(playerInputMove);
-                        //Cell userCoicheCell = new Cell(userInput[0], userInput[1]);
-                        //MakeMove(userCoicheCell);
-                        //UpdateUIBoard();
-                    }
-                    else
-                    {
-                        //Console.WriteLine("Press any key to continue...");
-                        //Console.ReadKey();
-                        Random randomMove = new Random();
-                        ICollection<Cell> keys = r_GameManager.PlayerLegalMove.Keys;
-                        Cell randomKey = keys.ElementAt(randomMove.Next(keys.Count));
-                        r_GameManager.MakeMove(randomKey);
-                    }
-                }
-                //r_GameManager.Winner = r_GameManager.getWinnerPlayerName();
-                //                Console.WriteLine(@"Game Over...
-                //The final score is:
-                //{0}(Black): {1} - {2}(White): {3}
-
-                //AND THE WINNER IS... *** {4} *** !!!
-                //", r_Player1.PlayerName, m_GameBoard.BlackCount, r_Player2.PlayerName, m_GameBoard.WhiteCount, m_Winner);
-                //                Console.WriteLine(
-                //                    @"Do you want a REMATCH?
-                //press 0 to end session or 1 to play again");
-                //bool playRematch = inputGameMode();
-                //if (playRematch == false)
-                {
-
-                    //                    Console.WriteLine(@"Thank you for playing!
-                    //Have a good day,
-                    //Bye-Bye :)");
-                    wantToPlay = false;
-                }
-                //else
-                {
-
-                    //int currentBoardSize = m_GameBoard.BoardSize;
-                    //m_GameBoard = new Board(currentBoardSize, r_Player1.PlayerName, r_Player2.PlayerName);
-                    //m_GameOver = false;
-                    //m_CurrentPlayer = r_Player1.PlayerColor == Player.eColor.Black ? r_Player1 : r_Player2;
-                    //m_PlayerLegalMove = findLegalMoves(m_CurrentPlayer);
-                }
+                    break;
+                }                    
             }
         }
 
@@ -116,6 +71,7 @@ namespace OthelloController
                 ICollection<Cell> keys = r_GameManager.PlayerLegalMove.Keys;
                 Cell randomKey = keys.ElementAt(randomMove.Next(keys.Count));
                 r_GameManager.MakeMove(randomKey);
+                UpdateUIBoard();
                 m_UIManager.GameForm.ChangeGameFormTitle(r_GameManager.CurrentPlayer.PlayerColor.ToString());
             }
 
@@ -126,5 +82,13 @@ namespace OthelloController
             Dictionary<Cell, List<Cell>> currentLegalMoves = r_GameManager.LegalMoves;
         }
 
+        private void OnGameOver(object sender, EventArgs e)
+        {
+            // Close the game view
+            m_UIManager.GameForm.Close();
+            string endGameMessage = string.Format(@"{0} Won!! ({1}/{2}) ({3}/{4})
+Would oy like another round?", r_GameManager.Winner, r_GameManager.GameBoard.BlackCount, r_GameManager.GameBoard.WhiteCount, m_Player1Wins, m_Player2Wins);
+            MessageBox.Show(endGameMessage);
+        }
     }
 }

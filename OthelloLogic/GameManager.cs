@@ -14,6 +14,7 @@ namespace OthelloLogic
         private Dictionary<Cell, List<Cell>> m_PlayerLegalMove;
         private bool m_GameOver;
         private string m_Winner;
+        public event EventHandler IsGameOver;
 
 
         public GameManager(int i_BoardSize, bool i_IsComputer)
@@ -71,67 +72,6 @@ namespace OthelloLogic
                 return m_PlayerLegalMove;
             }
         }
-
-
-        
-//        public void PlayGame()
-//        {
-//            bool wantToPlay = true;
-//            while (wantToPlay)
-//            {
-//                while (m_GameOver == false)
-//                {
-
-//                    if (CurrentPlayer.IsComputer == false)
-//                    {
-//                        //string playerInputMove = MoveInput();
-//                        //if (playerInputMove[0] == 'Q')
-
-//                        //int[] userInput = getUserInputInInts(playerInputMove);
-//                        //Cell userCoicheCell = new Cell(userInput[0], userInput[1]);
-//                        //MakeMove(userCoicheCell);
-//                    }
-//                    else
-//                    {
-//                        //Console.WriteLine("Press any key to continue...");
-//                        //Console.ReadKey();
-//                        Random randomMove = new Random();
-//                        ICollection<Cell> keys = m_PlayerLegalMove.Keys;
-//                        Cell randomKey = keys.ElementAt(randomMove.Next(keys.Count));
-//                        MakeMove(randomKey);
-//                    }
-//                }
-//                m_Winner = getWinnerPlayerName();
-////                Console.WriteLine(@"Game Over...
-////The final score is:
-////{0}(Black): {1} - {2}(White): {3}
-
-////AND THE WINNER IS... *** {4} *** !!!
-////", r_Player1.PlayerName, m_GameBoard.BlackCount, r_Player2.PlayerName, m_GameBoard.WhiteCount, m_Winner);
-////                Console.WriteLine(
-////                    @"Do you want a REMATCH?
-////press 0 to end session or 1 to play again");
-//                //bool playRematch = inputGameMode();
-//                //if (playRematch == false)
-//                {
-
-////                    Console.WriteLine(@"Thank you for playing!
-////Have a good day,
-////Bye-Bye :)");
-//                    wantToPlay = false;
-//                }
-//                //else
-//                {
-                
-//                    int currentBoardSize = m_GameBoard.BoardSize;
-//                    m_GameBoard = new Board(currentBoardSize, r_Player1.PlayerName, r_Player2.PlayerName);
-//                    m_GameOver = false;
-//                    m_CurrentPlayer = r_Player1.PlayerColor == Player.eColor.Black ? r_Player1 : r_Player2;
-//                    m_PlayerLegalMove = findLegalMoves(m_CurrentPlayer);
-//                }
-//            }
-//        }
-
         public bool MakeMove(Cell i_Cell)
         {
             if (!m_PlayerLegalMove.ContainsKey((i_Cell)))
@@ -148,34 +88,6 @@ namespace OthelloLogic
             //m_GameBoard.DisplayBoard(r_Player1.PlayerName, r_Player2.PlayerName, m_CurrentPlayer.PlayerName);
             return true;
         }
-
-        //private bool inputGameMode()
-        //{
-        //    bool inputMode = false;
-        //    int userInput;
-        //    string inputString = Console.ReadLine();
-        //    while (!int.TryParse(inputString, out userInput) || (userInput != 0) && (userInput != 1))
-        //    {
-        //        Console.WriteLine("Invalid input, please try again, press 0 or 1 :");
-        //        inputString = Console.ReadLine();
-        //    }
-
-        //    if (userInput != 0)
-        //    {
-        //        inputMode = true;
-        //    }
-
-        //    return inputMode;
-        //}
-
-        //private int[] getUserInputInInts(string i_UserInput)
-        //{
-        //    int[] intArray = new int[2];
-        //    intArray[0] = int.Parse(i_UserInput[0].ToString()) - 1;
-        //    intArray[1] = Convert.ToInt32(i_UserInput[1]) - 'A';
-        //    return intArray;
-        //}
-
         public Player CurrentPlayer
         {
             get { return m_CurrentPlayer; }
@@ -269,10 +181,6 @@ namespace OthelloLogic
         {
             m_CurrentPlayer = m_CurrentPlayer == r_Player1 ? r_Player2 : r_Player1;
             m_PlayerLegalMove = findLegalMoves(CurrentPlayer);
-            //foreach (Cell currentCell in m_PlayerLegalMove.Keys)
-            //{
-            //    m_GameBoard.Cells[currentCell.Row, currentCell.Col].CurrentColor = Player.eColor.Green;
-            //}
         }
 
         private string getWinnerPlayerName()
@@ -305,7 +213,8 @@ namespace OthelloLogic
 
             if (m_PlayerLegalMove.Count == 0)
             {
-                m_GameOver = true;
+                IsGameOver?.Invoke(this, EventArgs.Empty);
+                //m_GameOver = true;
             }
         }
 
