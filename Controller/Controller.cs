@@ -10,33 +10,37 @@ namespace OthelloController
 {
     class Controller
     {
-        private readonly GameManager r_GameManager;
+        private  GameManager m_GameManager;
         private int m_BoardSize;
-        bool m_IsComputer;
+        private bool m_IsComputer;
         private UIManager m_UIManager;
-        bool m_GameOn;
-        int m_Player1Wins = 0;
-        int m_Player2Wins = 0;
+        private bool m_GameOn;
+        private int m_Player1Wins = 0;
+        private int m_Player2Wins = 0;
 
         public Controller()
         {
             m_UIManager = new UIManager();
             m_BoardSize = m_UIManager.GameSettingForm.BoardSize;
             m_IsComputer = m_UIManager.GameSettingForm.IsAgainstComputer;
-            r_GameManager = new GameManager(m_BoardSize, m_IsComputer);
-            m_GameOn = true;
+            startGame(m_BoardSize, m_IsComputer);
+            
+        }
 
-            r_GameManager.IsGameOver += OnGameOver;
+        private void startGame(int i_BoarSize, bool i_IsComputer)
+        {
+            m_GameManager = new GameManager(i_BoarSize, i_IsComputer);
+            m_GameOn = true;
+            m_GameManager.IsGameOver += OnGameOver;
             m_UIManager.GameForm.OnPictureBoxClicked += OnClickMoveHandler;
             UpdateUIBoard();
             PlayGame();
         }
-
         private void UpdateUIBoard()
         {
-            Dictionary<Cell, List<Cell>> currentLegalMoves = r_GameManager.LegalMoves;
+            Dictionary<Cell, List<Cell>> currentLegalMoves = m_GameManager.LegalMoves;
 
-            foreach (Cell currentCell in r_GameManager.GameBoard.Cells)
+            foreach (Cell currentCell in m_GameManager.GameBoard.Cells)
             {
 
                 m_UIManager.GameForm.UpdateTablePictureBox(currentCell.CurrentColor.ToString(), currentCell.Row, currentCell.Col);
@@ -46,49 +50,81 @@ namespace OthelloController
                 m_UIManager.GameForm.UpdateTablePictureBox("Green", currentCell.Row, currentCell.Col);
             }
         }
-
+        
         public void PlayGame()
         {
             while (m_GameOn == true)
             {
+                if (m_UIManager.GameForm == null || m_UIManager.GameForm.IsDisposed)
+                {
+                    m_UIManager.GameForm = new GameForm(m_BoardSize);
+                }
+                
                 if (m_UIManager.GameForm.ShowDialog() == DialogResult.Cancel)
                 {
                     break;
-                }                    
+                }
             }
         }
 
+
         public void OnClickMoveHandler(int i_Row, int i_Col)
         {
-            Cell CurrentMove = new Cell(i_Row, i_Col);
-            r_GameManager.MakeMove(CurrentMove);
+            Cell currentMove = new Cell(i_Row, i_Col);
+            m_GameManager.MakeMove(currentMove);
             UpdateUIBoard();
-            m_UIManager.GameForm.ChangeGameFormTitle(r_GameManager.CurrentPlayer.PlayerColor.ToString());
+            m_UIManager.GameForm.ChangeGameFormTitle(m_GameManager.CurrentPlayer.PlayerColor.ToString());
 
-            if (r_GameManager.CurrentPlayer.IsComputer == true)
+            if (m_GameManager.CurrentPlayer.IsComputer == true)
             {
                 Random randomMove = new Random();
-                ICollection<Cell> keys = r_GameManager.PlayerLegalMove.Keys;
+                ICollection<Cell> keys = m_GameManager.PlayerLegalMove.Keys;
                 Cell randomKey = keys.ElementAt(randomMove.Next(keys.Count));
-                r_GameManager.MakeMove(randomKey);
+                m_GameManager.MakeMove(randomKey);
                 UpdateUIBoard();
-                m_UIManager.GameForm.ChangeGameFormTitle(r_GameManager.CurrentPlayer.PlayerColor.ToString());
+                m_UIManager.GameForm.ChangeGameFormTitle(m_GameManager.CurrentPlayer.PlayerName.ToString());
             }
 
         }
 
         public void GetLegalMoves()
         {
-            Dictionary<Cell, List<Cell>> currentLegalMoves = r_GameManager.LegalMoves;
+            Dictionary<Cell, List<Cell>> currentLegalMoves = m_GameManager.LegalMoves;
         }
 
+        private void updateRoundWinner()
+        {
+            if(m_GameManager.GetWinnerPlayerName() == "Black")
+            {
+                m_Player1Wins += 1;
+            }
+            else
+            {
+                m_Player2Wins += 1;
+            }
+        }
         private void OnGameOver(object sender, EventArgs e)
         {
-            // Close the game view
-            m_UIManager.GameForm.Close();
+            UpdateUIBoard();
+            updateRoundWinner();
+            m_GameOn = false;
+            m_GameManager.IsGameOver -= OnGameOver;
+            m_UIManager.GameForm.OnPictureBoxClicked -= OnClickMoveHandler;
+            
             string endGameMessage = string.Format(@"{0} Won!! ({1}/{2}) ({3}/{4})
-Would oy like another round?", r_GameManager.Winner, r_GameManager.GameBoard.BlackCount, r_GameManager.GameBoard.WhiteCount, m_Player1Wins, m_Player2Wins);
-            MessageBox.Show(endGameMessage);
+Would you like another round?", m_GameManager.GetWinnerPlayerName(), m_GameManager.GameBoard.BlackCount, m_GameManager.GameBoard.WhiteCount, m_Player1Wins, m_Player2Wins);
+            //MessageBox.Show(endGameMessage);
+            m_UIManager.GameForm.Dispose();
+            DialogResult result = MessageBox.Show(endGameMessage, "Othello", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+
+            if (result == DialogResult.OK)
+            {
+                startGame(m_BoardSize, m_IsComputer);
+            }
+            else if (result == DialogResult.Cancel)
+            {
+                Environment.Exit(0);
+            }
         }
     }
 }
