@@ -11,9 +11,7 @@ namespace OthelloLogic
         {
             None = 0,
             Black,
-            White,
-            Green
-
+            White
         }
 
         private readonly string r_PlayerName;

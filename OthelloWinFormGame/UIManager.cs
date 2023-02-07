@@ -56,7 +56,11 @@ namespace OthelloWinFormGame
 
         public void StartGameDialog()
         {
-            m_GameForm.ShowDialog();
+            //m_GameForm.ShowDialog();
+            if (m_GameForm.ShowDialog() == DialogResult.Cancel)
+            {
+                Application.Exit();
+            }
         }
 
         public Othello_GameSetting GameSettingForm

@@ -11,27 +11,35 @@ namespace OthelloController
     {
         private readonly GameManager r_GameManager;
         private int m_BoardSize;
+        bool m_IsComputer;
         private UIManager m_UIManager; 
 
         public Controller()
         {
             m_UIManager = new UIManager();
             m_BoardSize = m_UIManager.GameSettingForm.BoardSize;
-            bool i_IsComputer = m_UIManager.GameSettingForm.IsAgainstComputer;
-            r_GameManager = new GameManager(m_BoardSize, i_IsComputer);
+            m_IsComputer = m_UIManager.GameSettingForm.IsAgainstComputer;
+            r_GameManager = new GameManager(m_BoardSize, m_IsComputer);
+
+
             m_UIManager.GameForm.OnPictureBoxClicked += OnClickMoveHandler;
             UpdateUIBoard();
-            m_UIManager.StartGameDialog();
+            //m_UIManager.StartGameDialog();
+            PlayGame();
         }
 
         private void UpdateUIBoard()
         {
-            foreach(Cell currentCell in r_GameManager.GameBoard.Cells)
+            Dictionary<Cell, List<Cell>> currentLegalMoves = r_GameManager.LegalMoves;
+
+            foreach (Cell currentCell in r_GameManager.GameBoard.Cells)
             {
-                if(currentCell.CurrentColor != Player.eColor.None)
-                {
-                    m_UIManager.GameForm.UpdateTablePictureBox(currentCell.CurrentColor.ToString(), currentCell.Row, currentCell.Col);
-                }
+
+                m_UIManager.GameForm.UpdateTablePictureBox(currentCell.CurrentColor.ToString(), currentCell.Row, currentCell.Col);
+            }
+            foreach (Cell currentCell in currentLegalMoves.Keys)
+            {
+                m_UIManager.GameForm.UpdateTablePictureBox("Green", currentCell.Row, currentCell.Col);
             }
         }
 
@@ -40,9 +48,9 @@ namespace OthelloController
             bool wantToPlay = true;
             while (wantToPlay)
             {
+                m_UIManager.StartGameDialog();
                 while (r_GameManager.GameOver == false)
                 {
-
                     if (r_GameManager.CurrentPlayer.IsComputer == false)
                     {
                         //m_UIManager.GameForm.PictureBox_Click += ;
@@ -52,18 +60,19 @@ namespace OthelloController
                         //int[] userInput = getUserInputInInts(playerInputMove);
                         //Cell userCoicheCell = new Cell(userInput[0], userInput[1]);
                         //MakeMove(userCoicheCell);
+                        //UpdateUIBoard();
                     }
                     else
                     {
                         //Console.WriteLine("Press any key to continue...");
                         //Console.ReadKey();
                         Random randomMove = new Random();
-                        ICollection<Cell> keys = m_PlayerLegalMove.Keys;
+                        ICollection<Cell> keys = r_GameManager.PlayerLegalMove.Keys;
                         Cell randomKey = keys.ElementAt(randomMove.Next(keys.Count));
-                        MakeMove(randomKey);
+                        r_GameManager.MakeMove(randomKey);
                     }
                 }
-                m_Winner = getWinnerPlayerName();
+                //r_GameManager.Winner = r_GameManager.getWinnerPlayerName();
                 //                Console.WriteLine(@"Game Over...
                 //The final score is:
                 //{0}(Black): {1} - {2}(White): {3}
@@ -85,11 +94,11 @@ namespace OthelloController
                 //else
                 {
 
-                    int currentBoardSize = m_GameBoard.BoardSize;
-                    m_GameBoard = new Board(currentBoardSize, r_Player1.PlayerName, r_Player2.PlayerName);
-                    m_GameOver = false;
-                    m_CurrentPlayer = r_Player1.PlayerColor == Player.eColor.Black ? r_Player1 : r_Player2;
-                    m_PlayerLegalMove = findLegalMoves(m_CurrentPlayer);
+                    //int currentBoardSize = m_GameBoard.BoardSize;
+                    //m_GameBoard = new Board(currentBoardSize, r_Player1.PlayerName, r_Player2.PlayerName);
+                    //m_GameOver = false;
+                    //m_CurrentPlayer = r_Player1.PlayerColor == Player.eColor.Black ? r_Player1 : r_Player2;
+                    //m_PlayerLegalMove = findLegalMoves(m_CurrentPlayer);
                 }
             }
         }
@@ -97,7 +106,25 @@ namespace OthelloController
         public void OnClickMoveHandler(int i_Row, int i_Col)
         {
             Cell CurrentMove = new Cell(i_Row, i_Col);
-            r_GameManager.MakeMove(CurrentMove);
+            if (r_GameManager.CurrentPlayer.IsComputer == false)
+            {
+                r_GameManager.MakeMove(CurrentMove);
+                UpdateUIBoard();
+                m_UIManager.GameForm.ChangeGameFormTitle(r_GameManager.CurrentPlayer.PlayerColor.ToString());
+            }
+            else
+            {
+                Random randomMove = new Random();
+                ICollection<Cell> keys = r_GameManager.PlayerLegalMove.Keys;
+                Cell randomKey = keys.ElementAt(randomMove.Next(keys.Count));
+                r_GameManager.MakeMove(randomKey);
+            }
+
+        }
+
+        public void GetLegalMoves()
+        {
+            Dictionary<Cell, List<Cell>> currentLegalMoves = r_GameManager.LegalMoves;
         }
 
     }
