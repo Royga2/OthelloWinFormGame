@@ -37,8 +37,9 @@ namespace OthelloLogic
         public Player(eColor i_OponentColor, bool i_IsComputer)
         {
 
-            r_PlayerName = i_IsComputer == true ? "CPU" : "White";
+            //r_PlayerName = i_IsComputer == true ? "CPU" : "White";
             r_PlayerColor = i_OponentColor == eColor.Black ? eColor.White : eColor.Black;
+            r_PlayerName = r_PlayerColor.ToString();
             r_IsComputer = i_IsComputer;
         }
 
