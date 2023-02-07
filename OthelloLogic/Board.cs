@@ -79,10 +79,10 @@ namespace OthelloLogic
             r_Cells[r_BoardSize / 2, r_BoardSize / 2].CurrentColor = Player.eColor.White;
             r_Cells[r_BoardSize / 2 - 1, r_BoardSize / 2].CurrentColor = Player.eColor.Black;
             r_Cells[r_BoardSize / 2, r_BoardSize / 2 - 1].CurrentColor = Player.eColor.Black;
-            r_Cells[r_BoardSize / 2 - 2, r_BoardSize / 2 - 1].CurrentColor = Player.eColor.Green;
-            r_Cells[r_BoardSize / 2 - 1, r_BoardSize / 2 - 2].CurrentColor = Player.eColor.Green;
-            r_Cells[r_BoardSize / 2, r_BoardSize / 2 + 1].CurrentColor = Player.eColor.Green;
-            r_Cells[r_BoardSize / 2 + 1, r_BoardSize / 2].CurrentColor = Player.eColor.Green;
+            //r_Cells[r_BoardSize / 2 - 2, r_BoardSize / 2 - 1].CurrentColor = Player.eColor.Green;
+            //r_Cells[r_BoardSize / 2 - 1, r_BoardSize / 2 - 2].CurrentColor = Player.eColor.Green;
+            //r_Cells[r_BoardSize / 2, r_BoardSize / 2 + 1].CurrentColor = Player.eColor.Green;
+            //r_Cells[r_BoardSize / 2 + 1, r_BoardSize / 2].CurrentColor = Player.eColor.Green;
         }
 
         public Cell[,] Cells

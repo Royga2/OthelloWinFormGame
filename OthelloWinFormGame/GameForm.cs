@@ -107,6 +107,8 @@ namespace OthelloWinFormGame
         public void UpdateTablePictureBox(string i_Color, int i_Row, int i_Colomn)
         {
             PictureBox currentPictureBox =  tableLayoutPanel1.GetControlFromPosition(i_Colomn, i_Row) as PictureBox;
+            currentPictureBox.BackColor = Color.Empty;
+            currentPictureBox.Enabled = false;
             switch (i_Color)
             {
                 case "Black":
@@ -151,6 +153,11 @@ namespace OthelloWinFormGame
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        public void ChangeGameFormTitle(string i_CurrentPlayerColor)
+        {
+            this.Text = string.Format("Othello - {0} Turn",i_CurrentPlayerColor);
         }
 
     }

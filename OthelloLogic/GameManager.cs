@@ -27,20 +27,24 @@ namespace OthelloLogic
             m_GameBoard = new Board(i_BoardSize);
             m_CurrentPlayer = r_Player1.PlayerColor == Player.eColor.Black ? r_Player1 : r_Player2;
             m_PlayerLegalMove = findLegalMoves(m_CurrentPlayer);
+            //foreach (Cell currentCell in m_PlayerLegalMove.Keys)
+            //{
+            //    m_GameBoard.Cells[currentCell.Row, currentCell.Col].CurrentColor = Player.eColor.Green;
+            //}
             //PlayGame();
         }
 
         //for test purpeses
-        public GameManager(string i_Player1Name)
-        {
-            r_Player1 = new Player(i_Player1Name, Player.eColor.Black);
-            r_Player2 = new Player(Player.eColor.Black, true);
-            m_CurrentPlayer = r_Player1;
-            m_GameBoard = new Board(6, r_Player1.PlayerName, r_Player2.PlayerName);
-            m_PlayerLegalMove = findLegalMoves(m_CurrentPlayer);
-            //PlayGame();
+        //public GameManager(string i_Player1Name)
+        //{
+        //    r_Player1 = new Player(i_Player1Name, Player.eColor.Black);
+        //    r_Player2 = new Player(Player.eColor.Black, true);
+        //    m_CurrentPlayer = r_Player1;
+        //    m_GameBoard = new Board(6, r_Player1.PlayerName, r_Player2.PlayerName);
+        //    m_PlayerLegalMove = findLegalMoves(m_CurrentPlayer);
+        //    //PlayGame();
 
-        }
+        //}
 
         public Board GameBoard
         {
@@ -59,6 +63,15 @@ namespace OthelloLogic
             get { return m_Winner; }
             set { m_Winner = value; }
         }
+
+        public Dictionary<Cell, List<Cell>> LegalMoves
+        {
+            get
+            {
+                return m_PlayerLegalMove;
+            }
+        }
+
 
         
 //        public void PlayGame()
@@ -256,6 +269,10 @@ namespace OthelloLogic
         {
             m_CurrentPlayer = m_CurrentPlayer == r_Player1 ? r_Player2 : r_Player1;
             m_PlayerLegalMove = findLegalMoves(CurrentPlayer);
+            //foreach (Cell currentCell in m_PlayerLegalMove.Keys)
+            //{
+            //    m_GameBoard.Cells[currentCell.Row, currentCell.Col].CurrentColor = Player.eColor.Green;
+            //}
         }
 
         private string getWinnerPlayerName()
@@ -308,7 +325,10 @@ namespace OthelloLogic
                 for (int col = 0; col < m_GameBoard.BoardSize; col++)
                 {
                     Cell cellToAdd = new Cell(row, col);
-
+                    //if (m_GameBoard.Cells[row, col].CurrentColor == Player.eColor.Green)
+                    //{
+                    //    m_GameBoard.Cells[row, col].CurrentColor = Player.eColor.None;
+                    //}
                     if (isMoveLegal(i_Player, cellToAdd, out List<Cell> capturbaleCells))
                     {
                         legalMoves[cellToAdd] = capturbaleCells;
