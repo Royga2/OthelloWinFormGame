@@ -9,7 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 
 
-namespace OthelloWinFormGame
+namespace OthelloUI
 {
     public partial class FormGame : Form
     {

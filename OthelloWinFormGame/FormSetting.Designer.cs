@@ -1,5 +1,5 @@
 ﻿
-namespace OthelloWinFormGame
+namespace OthelloUI
 {
     partial class FormSetting
     {

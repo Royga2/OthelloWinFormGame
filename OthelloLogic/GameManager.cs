@@ -15,6 +15,7 @@ namespace OthelloLogic
         private bool m_GameOver;
         private string m_Winner;
         public event EventHandler IsGameOver;
+        public event Action<string> TurnSkipped;
 
 
         public GameManager(int i_BoardSize, bool i_IsComputer)
@@ -81,6 +82,7 @@ namespace OthelloLogic
             //m_GameBoard.DisplayBoard(r_Player1.PlayerName, r_Player2.PlayerName, m_CurrentPlayer.PlayerName);
             return true;
         }
+
         public Player CurrentPlayer
         {
             get { return m_CurrentPlayer; }
@@ -201,13 +203,20 @@ namespace OthelloLogic
                 return;
             }
 
-            //MessageBox.Show(@"{0} you don't have any legal move your turn is skipped", m_CurrentPlayer.PlayerName);
+            string message = string.Format(
+                @"{0} you don't have any legal move your turn is skipped",
+                m_CurrentPlayer.PlayerName);
+            
             switchPlayer();
 
             if (m_PlayerLegalMove.Count == 0)
             {
                 IsGameOver?.Invoke(this, EventArgs.Empty);
                 //m_GameOver = true;
+            }
+            else
+            {
+                TurnSkipped?.Invoke(message);
             }
         }
 
