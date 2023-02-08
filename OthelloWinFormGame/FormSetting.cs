@@ -20,11 +20,6 @@ namespace OthelloUI
         {
             InitializeComponent();
             FormClosing += FormSetting_FormClosing;
-            //.FormClosed += ExitApp;
-            //if (CancelButton.DialogResult == DialogResult.Cancel)
-            //{
-            //    Application.Exit();
-            //}
         }
       
             private void FormSetting_FormClosing(object sender, FormClosingEventArgs e)
@@ -62,36 +57,21 @@ namespace OthelloUI
         private void buttonPlayCPU_Click(object sender, EventArgs e)
         {
             m_IsAgainstComputer = true;
-            //Close();
             OnClickGameMode?.Invoke(sender, e);
         }
 
         private void buttonPVP_Click(object sender, EventArgs e)
         {
             m_IsAgainstComputer = false;
-            //Close();
             OnClickGameMode?.Invoke(sender, e);
         }
 
-        //public Button ButtonPVP
-        //{
-        //    get { return this.buttonPVP; }
-        //}
-
-        //public Button ButtonPlayCPU
-        //{
-        //    get { return this.buttonPlayCPU; }
-        //}
 
         public int BoardSize
         {
             get { return m_BoardSize; }
         }
 
-        //public bool IsAgainstComputer
-        //{
-        //    get { return m_IsAgainstComputer; }
-        //}
 
     }
 }

@@ -82,6 +82,7 @@ namespace OthelloUI
         public void UpdateTablePictureBox(string i_Color, int i_Row, int i_Colomn)
         {
             PictureBox currentPictureBox =  tableLayoutPanel1.GetControlFromPosition(i_Colomn, i_Row) as PictureBox;
+
             if(currentPictureBox != null)
             {
                 currentPictureBox.BackColor = Color.Empty;

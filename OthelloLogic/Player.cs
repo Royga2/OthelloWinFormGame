@@ -36,8 +36,6 @@ namespace OthelloLogic
 
         public Player(eColor i_OponentColor, bool i_IsComputer)
         {
-
-            //r_PlayerName = i_IsComputer == true ? "CPU" : "White";
             r_PlayerColor = i_OponentColor == eColor.Black ? eColor.White : eColor.Black;
             r_PlayerName = r_PlayerColor.ToString();
             r_IsComputer = i_IsComputer;
@@ -64,20 +62,5 @@ namespace OthelloLogic
             }
         }
 
-////        private string setPlayerName()
-////        {
-
-////            Console.WriteLine("Please enter your name: ");
-////            string playerName = Console.ReadLine();
-
-////            while (playerName.Length <= 0 || playerName.Length > 30)
-////            {
-////                Console.WriteLine(@"Error: name must be at list one characters and no longer than 30 characters,
-////Please try again");
-////                playerName = Console.ReadLine();
-////            }
-////            Console.Clear();
-////            return playerName;
-////        }
     }
 }
