@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 namespace OthelloWinFormGame
 {
-    partial class GameForm
+    partial class FormGame
     {
         /// <summary>
         /// Required designer variable.
@@ -35,7 +35,9 @@ namespace OthelloWinFormGame
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            //this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -43,18 +45,19 @@ namespace OthelloWinFormGame
             this.tableLayoutPanel1.TabIndex = 0;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
-            // GameForm
+            // FormGame
             // 
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.Table;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(720, 613);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "GameForm";
+            this.Name = "FormGame";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Othello - Black Turn";
-            this.Load += new System.EventHandler(this.GameForm_Load);
+            this.Load += new System.EventHandler(this.FormGame_Load);
             this.ResumeLayout(false);
 
         }
