@@ -11,23 +11,34 @@ using System.Windows.Forms;
 
 namespace OthelloWinFormGame
 {
-    public partial class GameForm : Form
+    public partial class FormGame : Form
     {
         //private readonly TableLayoutPanel m_TableLayoutPanel = new TableLayoutPanel();
         private readonly int r_BoardSize;
         private const int k_PictureBoxSize = 50;
         public event Action<int,int> OnPictureBoxClicked;
+        public event FormClosingEventHandler OnFormGameClosing;
 
-        public GameForm(int i_BoardSize)
+        public FormGame(int i_BoardSize)
         {
             r_BoardSize = i_BoardSize;
             InitializeComponent();
             this.tableLayoutPanel1.AutoSize = false;
             initializeTableLayoutPanel();
+            FormClosing += FormGame_FormClosing;
+
 
         }
 
-        private void GameForm_Load(object sender, EventArgs e)
+        private void FormGame_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (OnFormGameClosing != null)
+            {
+                OnFormGameClosing(sender, e);
+            }
+        }
+
+        private void FormGame_Load(object sender, EventArgs e)
         {
             //initializeTableLayoutPanel();
         }
@@ -127,7 +138,7 @@ namespace OthelloWinFormGame
 
         }
 
-        public void ChangeGameFormTitle(string i_CurrentPlayerColor)
+        public void ChangeFormGameTitle(string i_CurrentPlayerColor)
         {
             this.Text = string.Format("Othello - {0} Turn",i_CurrentPlayerColor);
         }

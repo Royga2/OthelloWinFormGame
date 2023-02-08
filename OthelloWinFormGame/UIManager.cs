@@ -9,19 +9,18 @@ namespace OthelloWinFormGame
 {
     public class UIManager
     {
-        bool m_IsAgainstComputer;
-        private Othello_GameSetting m_GameSettingForm;
-        private GameForm m_GameForm;
+        private readonly FormSetting m_FormSetting;
+        private FormGame m_FormGame;
 
         public UIManager()
         {
-            m_GameSettingForm = new Othello_GameSetting();
+            m_FormSetting = new FormSetting();
             //m_GameSettingForm.FormClosed += FormSettingClosed;
             //m_GameSettingForm.
-            m_GameSettingForm.OnSettingFormClosing += FormSettingClosingHandler;
-            m_GameSettingForm.ButtonPVP.Click += button_Clicked;
-            m_GameSettingForm.ButtonPlayCPU.Click += button_Clicked;
-            m_GameSettingForm.ShowDialog();
+            m_FormSetting.OnFormSettingClosing += FormSettingClosingHandler;
+            m_FormSetting.ButtonPVP.Click += button_Clicked;
+            m_FormSetting.ButtonPlayCPU.Click += button_Clicked;
+            m_FormSetting.ShowDialog();
 
             //if (m_GameSettingForm.ShowDialog() == DialogResult.Cancel)
             //{
@@ -46,11 +45,11 @@ namespace OthelloWinFormGame
             Button senderButton = sender as Button;
             if(senderButton != null)
             {
-                Othello_GameSetting gameSettingForm = senderButton.Parent as Othello_GameSetting;
+                FormSetting gameSettingForm = senderButton.Parent as FormSetting;
                 if(gameSettingForm != null)
                 {
-                    m_GameForm = new GameForm(gameSettingForm.BoardSize);
-                    m_GameSettingForm.Dispose();
+                    m_FormGame = new FormGame(gameSettingForm.BoardSize);
+                    m_FormSetting.Dispose();
                 }
             }
         }
@@ -83,24 +82,16 @@ namespace OthelloWinFormGame
         //    //}
         //}
 
-        public void StartGameDialog()
+
+        public FormSetting FormSetting
         {
-            //m_GameForm.ShowDialog();
-            if (m_GameForm.ShowDialog() == DialogResult.Cancel)
-            {
-                Environment.Exit(0);
-            }
+            get { return m_FormSetting; }
         }
 
-        public Othello_GameSetting GameSettingForm
+        public FormGame FormGame
         {
-            get { return m_GameSettingForm; }
-        }
-
-        public GameForm GameForm
-        {
-            get { return m_GameForm; }
-            set { m_GameForm = value; }
+            get { return m_FormGame; }
+            set { m_FormGame = value; }
         }
     }
 

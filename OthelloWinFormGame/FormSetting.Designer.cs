@@ -1,7 +1,7 @@
 ﻿
 namespace OthelloWinFormGame
 {
-    partial class Othello_GameSetting
+    partial class FormSetting
     {
         /// <summary>
         /// Required designer variable.
@@ -36,9 +36,10 @@ namespace OthelloWinFormGame
             // 
             // buttonPlayCPU
             // 
-            this.buttonPlayCPU.Location = new System.Drawing.Point(12, 57);
+            this.buttonPlayCPU.Location = new System.Drawing.Point(16, 70);
+            this.buttonPlayCPU.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonPlayCPU.Name = "buttonPlayCPU";
-            this.buttonPlayCPU.Size = new System.Drawing.Size(97, 35);
+            this.buttonPlayCPU.Size = new System.Drawing.Size(129, 43);
             this.buttonPlayCPU.TabIndex = 0;
             this.buttonPlayCPU.Text = "Play against the computer";
             this.buttonPlayCPU.UseVisualStyleBackColor = true;
@@ -46,9 +47,10 @@ namespace OthelloWinFormGame
             // 
             // buttonPVP
             // 
-            this.buttonPVP.Location = new System.Drawing.Point(115, 57);
+            this.buttonPVP.Location = new System.Drawing.Point(153, 70);
+            this.buttonPVP.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonPVP.Name = "buttonPVP";
-            this.buttonPVP.Size = new System.Drawing.Size(97, 35);
+            this.buttonPVP.Size = new System.Drawing.Size(129, 43);
             this.buttonPVP.TabIndex = 1;
             this.buttonPVP.Text = "Play against your friend";
             this.buttonPVP.UseVisualStyleBackColor = true;
@@ -56,31 +58,34 @@ namespace OthelloWinFormGame
             // 
             // buttonBoardSize
             // 
-            this.buttonBoardSize.Location = new System.Drawing.Point(12, 12);
+            this.buttonBoardSize.Location = new System.Drawing.Point(16, 15);
+            this.buttonBoardSize.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonBoardSize.Name = "buttonBoardSize";
-            this.buttonBoardSize.Size = new System.Drawing.Size(200, 35);
+            this.buttonBoardSize.Size = new System.Drawing.Size(267, 43);
             this.buttonBoardSize.TabIndex = 2;
             this.buttonBoardSize.Text = "Board Size: 6x6 (click to increase)";
             this.buttonBoardSize.UseVisualStyleBackColor = true;
             this.buttonBoardSize.Click += new System.EventHandler(this.buttonBoardSize_Click);
             // 
-            // Othello_GameSetting
+            // FormSetting
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(223, 101);
+            this.ClientSize = new System.Drawing.Size(297, 124);
             this.Controls.Add(this.buttonBoardSize);
             this.Controls.Add(this.buttonPVP);
             this.Controls.Add(this.buttonPlayCPU);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Othello_GameSetting";
+            this.Name = "FormSetting";
             this.RightToLeftLayout = true;
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Othello-Game Setting";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.Othello_GameSetting_Load);
             this.ResumeLayout(false);
 

@@ -9,13 +9,13 @@ using System.Windows.Forms;
 
 namespace OthelloWinFormGame
 {
-    public partial class Othello_GameSetting : Form
+    public partial class FormSetting : Form
     {
         int m_BoardSize = 6;
         bool m_IsAgainstComputer;
-        public event FormClosingEventHandler OnSettingFormClosing;
+        public event FormClosingEventHandler OnFormSettingClosing;
 
-        public Othello_GameSetting()
+        public FormSetting()
         {
             InitializeComponent();
             FormClosing += FormSetting_FormClosing;
@@ -28,9 +28,9 @@ namespace OthelloWinFormGame
       
             private void FormSetting_FormClosing(object sender, FormClosingEventArgs e)
             {
-                if (OnSettingFormClosing != null)
+                if (OnFormSettingClosing != null)
                 {
-                    OnSettingFormClosing(sender, e);
+                    OnFormSettingClosing(sender, e);
                 }
             }
 
