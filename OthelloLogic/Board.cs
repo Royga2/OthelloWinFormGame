@@ -29,31 +29,10 @@ namespace OthelloLogic
             }
 
             initializedCells();
-
         }
 
-      
         public Board(string i_FirstPlayerName, string i_SecondPlayerName)
         {
-            r_Cells = new Cell[r_BoardSize, r_BoardSize];
-            m_BlackCount = 2;
-            m_WhiteCount = 2;
-
-            for (int i = 0; i < r_BoardSize; i++)
-            {
-                for (int j = 0; j < r_BoardSize; j++)
-                {
-                    r_Cells[i, j] = new Cell(i, j);
-                }
-            }
-
-            initializedCells();
-        }
-
-        //for test purpeses
-        public Board(int i_BoardSize, string i_FirstPlayerName, string i_SecondPlayerName)
-        {
-            r_BoardSize = i_BoardSize;
             r_Cells = new Cell[r_BoardSize, r_BoardSize];
             m_BlackCount = 2;
             m_WhiteCount = 2;
@@ -75,10 +54,6 @@ namespace OthelloLogic
             r_Cells[r_BoardSize / 2, r_BoardSize / 2].CurrentColor = Player.eColor.White;
             r_Cells[r_BoardSize / 2 - 1, r_BoardSize / 2].CurrentColor = Player.eColor.Black;
             r_Cells[r_BoardSize / 2, r_BoardSize / 2 - 1].CurrentColor = Player.eColor.Black;
-            //r_Cells[r_BoardSize / 2 - 2, r_BoardSize / 2 - 1].CurrentColor = Player.eColor.Green;
-            //r_Cells[r_BoardSize / 2 - 1, r_BoardSize / 2 - 2].CurrentColor = Player.eColor.Green;
-            //r_Cells[r_BoardSize / 2, r_BoardSize / 2 + 1].CurrentColor = Player.eColor.Green;
-            //r_Cells[r_BoardSize / 2 + 1, r_BoardSize / 2].CurrentColor = Player.eColor.Green;
         }
 
         public Cell[,] Cells
@@ -88,51 +63,21 @@ namespace OthelloLogic
 
         public int BlackCount
         {
-            get
-            {
-                return m_BlackCount;
-
-            }
-            set
-            {
-                m_BlackCount = value;
-            }
+            get { return m_BlackCount; }
+            set { m_BlackCount = value; }
         }
 
         public int WhiteCount
         {
-            get
-            {
-                return m_WhiteCount;
-            }
-            set
-            {
-                m_WhiteCount = value;
-            }
+            get{ return m_WhiteCount; }
+            set { m_WhiteCount = value; }
         }
 
         public int BoardSize
         {
             get
-            {
-                return r_BoardSize;
-            }
+            { return r_BoardSize; }
         }
-
-//        public int GetValidBoardSize()
-//        {
-//            int boardSizeInput;
-//            Console.WriteLine(@"Please choose the board size:
-//press 6 for 6x6 or 8 for 8x8 :");
-//            string inputString = Console.ReadLine();
-//            while (!int.TryParse(inputString, out boardSizeInput) || (boardSizeInput != 6) && (boardSizeInput != 8))
-//            {
-//                Console.WriteLine("Invalid input, please try again.... press 6 for 6x6 or 8 for 8x8 :");
-//                inputString = Console.ReadLine();
-//            }
-//            Console.Clear();
-//            return boardSizeInput;
-//        }
 
         public void UpdatesScore(Player i_MovePlayer, int i_CapturbaleCellsCount)
         {
@@ -147,7 +92,6 @@ namespace OthelloLogic
                 m_BlackCount -= i_CapturbaleCellsCount;
             }
         }
-
     }
 }
 

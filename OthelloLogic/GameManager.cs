@@ -9,54 +9,51 @@ namespace OthelloLogic
     {
         private readonly Player r_Player1;
         private readonly Player r_Player2;
-        private Board m_GameBoard;
+        private readonly Board r_GameBoard;
         private Player m_CurrentPlayer;
         private Dictionary<Cell, List<Cell>> m_PlayerLegalMove;
-        private bool m_GameOver;
-        private string m_Winner;
-        public event EventHandler IsGameOver;
+        public event EventHandler GameOver;
         public event Action<string> TurnSkipped;
+        public event Action<string, int, int> CellColorChanged;
 
 
         public GameManager(int i_BoardSize, bool i_IsComputer)
         {
-   
             r_Player1 = new Player();
             r_Player2 = new Player(r_Player1.PlayerColor, i_IsComputer);
-            m_GameBoard = new Board(i_BoardSize);
+            r_GameBoard = new Board(i_BoardSize);
             m_CurrentPlayer = r_Player1.PlayerColor == Player.eColor.Black ? r_Player1 : r_Player2;
             m_PlayerLegalMove = findLegalMoves(m_CurrentPlayer);
+        }
+
+        protected virtual void OnGameOver(object sender, EventArgs e)
+        {
+            if (GameOver != null)
+            {
+                GameOver.Invoke(sender, e);
+            }
 
         }
 
-        //for test purpeses
-        //public GameManager(string i_Player1Name)
-        //{
-        //    r_Player1 = new Player(i_Player1Name, Player.eColor.Black);
-        //    r_Player2 = new Player(Player.eColor.Black, true);
-        //    m_CurrentPlayer = r_Player1;
-        //    m_GameBoard = new Board(6, r_Player1.PlayerName, r_Player2.PlayerName);
-        //    m_PlayerLegalMove = findLegalMoves(m_CurrentPlayer);
-        //    //PlayGame();
+        protected virtual void OnTurnSkipped(string i_Color)
+        {
+            if(TurnSkipped != null)
+            {
+                TurnSkipped.Invoke(i_Color);
+            }
+        }
 
-        //}
+        protected virtual void OnCellColorChanged(string i_Color, int i_Row, int i_Col)
+        {
+            if (CellColorChanged != null)
+            {
+                CellColorChanged.Invoke(i_Color, i_Row, i_Col);
+            }
+        }
 
         public Board GameBoard
         {
-            get { return m_GameBoard; }
-            //set { m_GameBoard = value; }
-        }
-
-        public bool GameOver
-        {
-            get { return m_GameOver; }
-            set { m_GameOver = value; }
-        }
-
-        public string Winner
-        {
-            get { return m_Winner; }
-            set { m_Winner = value; }
+            get { return r_GameBoard; }
         }
 
         public Dictionary<Cell, List<Cell>> LegalMoves
@@ -66,6 +63,7 @@ namespace OthelloLogic
                 return m_PlayerLegalMove;
             }
         }
+
         public bool MakeMove(Cell i_Cell)
         {
             if (!m_PlayerLegalMove.ContainsKey((i_Cell)))
@@ -75,11 +73,11 @@ namespace OthelloLogic
 
             Player movePlayer = m_CurrentPlayer;
             List<Cell> capturbaleCells = m_PlayerLegalMove[i_Cell];
-            m_GameBoard.Cells[i_Cell.Row, i_Cell.Col].CurrentColor = CurrentPlayer.PlayerColor;
+            r_GameBoard.Cells[i_Cell.Row, i_Cell.Col].CurrentColor = CurrentPlayer.PlayerColor;
+            CellColorChanged?.Invoke(m_CurrentPlayer.PlayerColor.ToString(), i_Cell.Row, i_Cell.Col);
             flipDiscs(capturbaleCells);
-            m_GameBoard.UpdatesScore(movePlayer, capturbaleCells.Count);
+            r_GameBoard.UpdatesScore(movePlayer, capturbaleCells.Count);
             passTurn();
-            //m_GameBoard.DisplayBoard(r_Player1.PlayerName, r_Player2.PlayerName, m_CurrentPlayer.PlayerName);
             return true;
         }
 
@@ -102,9 +100,9 @@ namespace OthelloLogic
             int row = i_Cell.Row + i_RowOffSet;
             int col = i_Cell.Col + i_ColOffSet;
 
-            while (isInsideBoard(row, col) && m_GameBoard.Cells[row, col].CurrentColor != Player.eColor.None)
+            while (isInsideBoard(row, col) && r_GameBoard.Cells[row, col].CurrentColor != Player.eColor.None)
             {
-                if (m_GameBoard.Cells[row, col].CurrentColor == OpponentPlayerColor(i_Player.PlayerColor))
+                if (r_GameBoard.Cells[row, col].CurrentColor == OpponentPlayerColor(i_Player.PlayerColor))
                 {
                     capturbaleCells.Add(new Cell(row, col));
                     row += i_RowOffSet;
@@ -157,36 +155,44 @@ namespace OthelloLogic
 
         private bool isMoveLegal(Player i_Player, Cell i_Cell, out List<Cell> o_CapturbaleCells)
         {
-            if (m_GameBoard.Cells[i_Cell.Row, i_Cell.Col].CurrentColor != Player.eColor.None)
+            bool isMoveLegal = false;
+            if (r_GameBoard.Cells[i_Cell.Row, i_Cell.Col].CurrentColor != Player.eColor.None)
             {
                 o_CapturbaleCells = null;
-                return false;
+            }
+            else
+            {
+                o_CapturbaleCells = this.capturbaleCells(i_Cell, i_Player);
+                isMoveLegal = o_CapturbaleCells.Count > 0;
             }
 
-            o_CapturbaleCells = this.capturbaleCells(i_Cell, i_Player);
-            return o_CapturbaleCells.Count > 0;
+            return isMoveLegal;
         }
 
         private bool isInsideBoard(int i_Row, int i_Col)
         {
-            return i_Row >= 0 && i_Row < m_GameBoard.BoardSize && i_Col >= 0 && i_Col < m_GameBoard.BoardSize;
+            return i_Row >= 0 && i_Row < r_GameBoard.BoardSize && i_Col >= 0 && i_Col < r_GameBoard.BoardSize;
         }
 
         private void switchPlayer()
         {
             m_CurrentPlayer = m_CurrentPlayer == r_Player1 ? r_Player2 : r_Player1;
+            foreach(Cell cell in m_PlayerLegalMove.Keys)
+            {
+                OnCellColorChanged("None", cell.Row, cell.Col);
+            }
             m_PlayerLegalMove = findLegalMoves(CurrentPlayer);
         }
 
         public string GetWinnerPlayerName()
         {
             string winnerName = "NO ONE :(";
-            if (m_GameBoard.BlackCount > m_GameBoard.WhiteCount)
+            if (r_GameBoard.BlackCount > r_GameBoard.WhiteCount)
             {
                 winnerName = r_Player1.PlayerColor == Player.eColor.Black ? r_Player1.PlayerName : r_Player2.PlayerName;
             }
 
-            if (m_GameBoard.WhiteCount > m_GameBoard.BlackCount)
+            if (r_GameBoard.WhiteCount > r_GameBoard.BlackCount)
             {
                 winnerName = r_Player1.PlayerColor == Player.eColor.White ? r_Player1.PlayerName : r_Player2.PlayerName;
             }
@@ -211,12 +217,11 @@ namespace OthelloLogic
 
             if (m_PlayerLegalMove.Count == 0)
             {
-                IsGameOver?.Invoke(this, EventArgs.Empty);
-                //m_GameOver = true;
+                OnGameOver(this, EventArgs.Empty);
             }
             else
             {
-                TurnSkipped?.Invoke(message);
+                OnTurnSkipped(message);
             }
         }
 
@@ -224,26 +229,28 @@ namespace OthelloLogic
         {
             foreach (Cell cell in i_Cells)
             {
-                m_GameBoard.Cells[cell.Row, cell.Col].CurrentColor = m_CurrentPlayer.PlayerColor;
+                r_GameBoard.Cells[cell.Row, cell.Col].CurrentColor = m_CurrentPlayer.PlayerColor;
+                OnCellColorChanged(m_CurrentPlayer.PlayerColor.ToString(),cell.Row,cell.Col);
             }
         }
 
         private Dictionary<Cell, List<Cell>> findLegalMoves(Player i_Player)
         {
             Dictionary<Cell, List<Cell>> legalMoves = new Dictionary<Cell, List<Cell>>();
-            for (int row = 0; row < m_GameBoard.BoardSize; row++)
+            for (int row = 0; row < r_GameBoard.BoardSize; row++)
             {
-                for (int col = 0; col < m_GameBoard.BoardSize; col++)
+                for (int col = 0; col < r_GameBoard.BoardSize; col++)
                 {
                     Cell cellToAdd = new Cell(row, col);
                
                     if (isMoveLegal(i_Player, cellToAdd, out List<Cell> capturbaleCells))
                     {
                         legalMoves[cellToAdd] = capturbaleCells;
+                        OnCellColorChanged("Green", cellToAdd.Row, cellToAdd.Col);
                     }
                 }
             }
-
+            
             return legalMoves;
         }
 
