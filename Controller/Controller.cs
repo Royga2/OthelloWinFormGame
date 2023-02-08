@@ -11,32 +11,67 @@ namespace OthelloController
     class Controller
     {
         private  GameManager m_GameManager;
-        private readonly int r_BoardSize;
-        private readonly bool r_IsComputer;
-        private UIManager m_UIManager;
+        private  int m_BoardSize = 6;
+        private bool m_IsComputer;
+        //private UIManager m_UIManager;
+        private readonly FormSetting m_FormSetting;
+        private FormGame m_FormGame;
         private bool m_GameOn;
         private int m_Player1Wins = 0;
         private int m_Player2Wins = 0;
 
         public Controller()
         {
-            m_UIManager = new UIManager();
-            r_BoardSize = m_UIManager.FormSetting.BoardSize;
-            r_IsComputer = m_UIManager.FormSetting.IsAgainstComputer;
-            startGame(r_BoardSize, r_IsComputer);
             
+            m_FormSetting = new FormSetting();
+            m_FormSetting.OnFormSettingClosing += FormSettingClosingHandler;
+            m_FormSetting.OnClickGameMode += OnClickGameModeHandler;
+            m_FormSetting.ShowDialog();
+            startGame(m_BoardSize, m_IsComputer);
+            
+        }
+
+        private void OnClickGameModeHandler(object sender, EventArgs e)
+        {
+            Button buttonSender = sender as Button;
+            
+            if (buttonSender != null)
+            {
+                FormSetting formSender = buttonSender.Parent as FormSetting;
+                if(formSender != null)
+                {
+                    m_BoardSize = formSender.BoardSize;
+                    if (buttonSender.Name == "buttonPlayCPU")
+                    {
+                        m_IsComputer = true;
+                    }
+                    else if(buttonSender.Name == "buttonPVP")
+                    {
+                        m_IsComputer = false;
+                    }
+                    formSender.Dispose();
+                }
+            }
         }
 
         private void startGame(int i_BoarSize, bool i_IsComputer)
         {
             m_GameManager = new GameManager(i_BoarSize, i_IsComputer);
-            m_GameOn = true;
-            m_GameManager.IsGameOver += OnGameOver;
-            m_UIManager.FormGame.OnFormGameClosing += FormGameClosingHandler;
-            m_UIManager.FormGame.OnPictureBoxClicked += OnClickMoveHandler;
-            UpdateUIBoard();
+            initializedGame();
             PlayGame();
         }
+
+        private void initializedGame()
+        {
+            m_FormGame = new FormGame(m_BoardSize);
+            m_GameOn = true;
+            m_FormGame.OnFormGameClosing += FormGameClosingHandler;
+            m_GameManager.IsGameOver += OnGameOver;
+            m_GameManager.TurnSkipped += OnTurnSkipped;
+            m_FormGame.OnPictureBoxClicked += OnClickMoveHandler;
+            UpdateUIBoard();
+        }
+
         private void UpdateUIBoard()
         {
             Dictionary<Cell, List<Cell>> currentLegalMoves = m_GameManager.LegalMoves;
@@ -44,11 +79,11 @@ namespace OthelloController
             foreach (Cell currentCell in m_GameManager.GameBoard.Cells)
             {
 
-                m_UIManager.FormGame.UpdateTablePictureBox(currentCell.CurrentColor.ToString(), currentCell.Row, currentCell.Col);
+                m_FormGame.UpdateTablePictureBox(currentCell.CurrentColor.ToString(), currentCell.Row, currentCell.Col);
             }
             foreach (Cell currentCell in currentLegalMoves.Keys)
             {
-                m_UIManager.FormGame.UpdateTablePictureBox("Green", currentCell.Row, currentCell.Col);
+                m_FormGame.UpdateTablePictureBox("Green", currentCell.Row, currentCell.Col);
             }
         }
 
@@ -60,14 +95,14 @@ namespace OthelloController
             }
 
         }
-        private void startAnotherRound()
+
+        private void FormSettingClosingHandler(object sender, FormClosingEventArgs e)
         {
-            m_UIManager.FormGame = new FormGame(r_BoardSize);
-            m_GameOn = true;
-            m_UIManager.FormGame.OnFormGameClosing += FormGameClosingHandler;
-            m_GameManager.IsGameOver += OnGameOver;
-            m_UIManager.FormGame.OnPictureBoxClicked += OnClickMoveHandler;
-            UpdateUIBoard();
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                Environment.Exit(0);
+            }
+
         }
 
         public void PlayGame()
@@ -75,17 +110,17 @@ namespace OthelloController
             while (m_GameOn == true)
             {
                 
-                if (m_UIManager.FormGame == null || m_UIManager.FormGame.IsDisposed)
-                {
-                    startAnotherRound();
-                    
-                }
-                
-                else if (m_UIManager.FormGame.ShowDialog() == DialogResult.Cancel)
+                if (m_FormGame.ShowDialog() == DialogResult.Cancel)
                 {
                     break;
                 }
             }
+        }
+
+        private void OnTurnSkipped(string i_Message)
+        {
+
+            MessageBox.Show(i_Message);
         }
 
         private void playerMove(int i_Row, int i_Col)
@@ -93,7 +128,7 @@ namespace OthelloController
             Cell currentMove = new Cell(i_Row, i_Col);
             m_GameManager.MakeMove(currentMove);
             UpdateUIBoard();
-            m_UIManager.FormGame.ChangeFormGameTitle(m_GameManager.CurrentPlayer.PlayerColor.ToString());
+            m_FormGame.ChangeFormGameTitle(m_GameManager.CurrentPlayer.PlayerColor.ToString());
         }
 
         private void cpuMove()
@@ -103,7 +138,7 @@ namespace OthelloController
             Cell randomKey = keys.ElementAt(randomMove.Next(keys.Count));
             m_GameManager.MakeMove(randomKey);
             UpdateUIBoard();
-            m_UIManager.FormGame.ChangeFormGameTitle(m_GameManager.CurrentPlayer.PlayerName.ToString());
+            m_FormGame.ChangeFormGameTitle(m_GameManager.CurrentPlayer.PlayerName.ToString());
         }
 
         public void OnClickMoveHandler(int i_Row, int i_Col)
@@ -138,8 +173,8 @@ namespace OthelloController
             UpdateUIBoard();
             m_GameOn = false;
             m_GameManager.IsGameOver -= OnGameOver;
-            m_UIManager.FormGame.OnPictureBoxClicked -= OnClickMoveHandler;
-            m_UIManager.FormGame.OnFormGameClosing -= FormGameClosingHandler;
+            m_FormGame.OnPictureBoxClicked -= OnClickMoveHandler;
+            m_FormGame.OnFormGameClosing -= FormGameClosingHandler;
 
             return roundWinner;
         }
@@ -150,7 +185,7 @@ namespace OthelloController
 
             if (result == DialogResult.OK)
             {
-                startGame(r_BoardSize, r_IsComputer);
+                startGame(m_BoardSize, m_IsComputer);
             }
             else if (result == DialogResult.Cancel)
             {
@@ -162,7 +197,7 @@ namespace OthelloController
             string roundWinnerName = endRoundAndReturnWinnerName();
             string endGameMessage = string.Format(@"{0} Won!! ({1}/{2}) ({3}/{4})
 Would you like another round?", roundWinnerName, m_GameManager.GameBoard.BlackCount, m_GameManager.GameBoard.WhiteCount, m_Player1Wins, m_Player2Wins);
-            m_UIManager.FormGame.Dispose();
+            m_FormGame.Dispose();
             gameOverMessageBox(endGameMessage);
 
         }

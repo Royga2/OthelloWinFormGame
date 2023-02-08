@@ -14,6 +14,7 @@ namespace OthelloUI
         int m_BoardSize = 6;
         bool m_IsAgainstComputer;
         public event FormClosingEventHandler OnFormSettingClosing;
+        public event EventHandler OnClickGameMode;
 
         public FormSetting()
         {
@@ -62,33 +63,35 @@ namespace OthelloUI
         {
             m_IsAgainstComputer = true;
             //Close();
+            OnClickGameMode?.Invoke(sender, e);
         }
 
         private void buttonPVP_Click(object sender, EventArgs e)
         {
             m_IsAgainstComputer = false;
             //Close();
+            OnClickGameMode?.Invoke(sender, e);
         }
 
-        public Button ButtonPVP
-        {
-            get { return this.buttonPVP; }
-        }
+        //public Button ButtonPVP
+        //{
+        //    get { return this.buttonPVP; }
+        //}
 
-        public Button ButtonPlayCPU
-        {
-            get { return this.buttonPlayCPU; }
-        }
+        //public Button ButtonPlayCPU
+        //{
+        //    get { return this.buttonPlayCPU; }
+        //}
 
         public int BoardSize
         {
             get { return m_BoardSize; }
         }
 
-        public bool IsAgainstComputer
-        {
-            get { return m_IsAgainstComputer; }
-        }
+        //public bool IsAgainstComputer
+        //{
+        //    get { return m_IsAgainstComputer; }
+        //}
 
     }
 }
