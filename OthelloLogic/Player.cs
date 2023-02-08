@@ -28,15 +28,14 @@ namespace OthelloLogic
 
         public Player(string i_Name, eColor i_PlayerColor)
         {
-
             r_PlayerName = i_Name;
             r_PlayerColor = i_PlayerColor;
             r_IsComputer = false;
         }
 
-        public Player(eColor i_OponentColor, bool i_IsComputer)
+        public Player(eColor i_OpponentColor, bool i_IsComputer)
         {
-            r_PlayerColor = i_OponentColor == eColor.Black ? eColor.White : eColor.Black;
+            r_PlayerColor = i_OpponentColor == eColor.Black ? eColor.White : eColor.Black;
             r_PlayerName = r_PlayerColor.ToString();
             r_IsComputer = i_IsComputer;
         }
@@ -48,19 +47,12 @@ namespace OthelloLogic
 
         public eColor PlayerColor
         {
-            get
-            {
-                return r_PlayerColor;
-            }
+            get { return r_PlayerColor; }
         }
 
         public string PlayerName
         {
-            get
-            {
-                return r_PlayerName;
-            }
+            get { return r_PlayerName; }
         }
-
     }
 }

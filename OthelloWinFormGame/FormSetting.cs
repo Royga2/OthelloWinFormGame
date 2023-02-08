@@ -11,30 +11,37 @@ namespace OthelloUI
 {
     public partial class FormSetting : Form
     {
-        int m_BoardSize = 6;
-        bool m_IsAgainstComputer;
-        public event FormClosingEventHandler OnFormSettingClosing;
-        public event EventHandler OnClickGameMode;
+        private int m_BoardSize = 6;
+        private bool m_IsAgainstComputer;
+        public event FormClosingEventHandler FormSettingClosing;
+        public event EventHandler GameModeButtonsClicked;
 
         public FormSetting()
         {
             InitializeComponent();
-            FormClosing += FormSetting_FormClosing;
+            FormClosing += OnFormSettingClosing;
         }
-      
-            private void FormSetting_FormClosing(object sender, FormClosingEventArgs e)
-            {
-                if (OnFormSettingClosing != null)
-                {
-                    OnFormSettingClosing(sender, e);
-                }
-            }
 
-            public void ExitApp(object sender, FormClosedEventArgs e)
+        public int BoardSize
         {
-            if (e.CloseReason == CloseReason.UserClosing)
-                Environment.Exit(0);
+            get { return m_BoardSize; }
+            set { m_BoardSize = value; }
         }
+
+        public bool IsAgainstComputer
+        {
+            get { return m_IsAgainstComputer; }
+            set { m_IsAgainstComputer = value; }
+        }
+
+        protected virtual void OnFormSettingClosing(object sender, FormClosingEventArgs e)
+        {
+            if (FormSettingClosing != null)
+            {
+                    FormSettingClosing(sender, e);
+            }
+        }
+
         private void Othello_GameSetting_Load(object sender, EventArgs e)
         {
 
@@ -54,24 +61,24 @@ namespace OthelloUI
             buttonBoardSize.Text = buttonBoardSizeTitle;
         }
 
+        protected virtual void OnGameModeButtonsClicked(object sender, EventArgs e)
+        {
+            if(GameModeButtonsClicked != null)
+            {
+                GameModeButtonsClicked.Invoke(sender, e);
+            }
+        }
+
         private void buttonPlayCPU_Click(object sender, EventArgs e)
         {
             m_IsAgainstComputer = true;
-            OnClickGameMode?.Invoke(sender, e);
+            OnGameModeButtonsClicked(sender, e);
         }
 
         private void buttonPVP_Click(object sender, EventArgs e)
         {
             m_IsAgainstComputer = false;
-            OnClickGameMode?.Invoke(sender, e);
+            OnGameModeButtonsClicked(sender, e);
         }
-
-
-        public int BoardSize
-        {
-            get { return m_BoardSize; }
-        }
-
-
     }
 }

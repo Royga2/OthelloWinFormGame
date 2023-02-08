@@ -13,11 +13,11 @@ namespace OthelloUI
 {
     public partial class FormGame : Form
     {
-        //private readonly TableLayoutPanel m_TableLayoutPanel = new TableLayoutPanel();
         private readonly int r_BoardSize;
         private const int k_PictureBoxSize = 50;
-        public event Action<int,int> OnPictureBoxClicked;
-        public event FormClosingEventHandler OnFormGameClosing;
+        public event Action<int,int> PictureBoxClicked;
+        public event FormClosingEventHandler FormGameClosing;
+
 
         public FormGame(int i_BoardSize)
         {
@@ -25,17 +25,7 @@ namespace OthelloUI
             InitializeComponent();
             this.tableLayoutPanel1.AutoSize = false;
             initializeTableLayoutPanel();
-            FormClosing += FormGame_FormClosing;
-
-
-        }
-
-        private void FormGame_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (OnFormGameClosing != null)
-            {
-                OnFormGameClosing(sender, e);
-            }
+            FormClosing += OnFormGameClosing;
         }
 
         private void FormGame_Load(object sender, EventArgs e)
@@ -45,7 +35,6 @@ namespace OthelloUI
 
         private void initializeTableLayoutPanel()
         {
-            
             tableLayoutPanel1.Dock = DockStyle.None;
             tableLayoutPanel1.Height = this.Height - 80;
             tableLayoutPanel1.Width = this.Width -60;
@@ -54,7 +43,7 @@ namespace OthelloUI
             tableLayoutPanel1.RowCount = r_BoardSize;
             tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
             //tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            //tableLayoutPanel1.Margin = new Padding(30, 30, 30, 30);
+
             for (int i = 0; i < r_BoardSize; i++)
             {
                 tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100.0f / r_BoardSize));
@@ -69,14 +58,11 @@ namespace OthelloUI
                     pictureBox.Dock = DockStyle.Fill;
                     pictureBox.Size = new Size(k_PictureBoxSize, k_PictureBoxSize);
                     pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                    //pictureBox.Image = null;
                     pictureBox.Enabled = false;
-                    pictureBox.Click += PictureBox_Click;
+                    pictureBox.Click += pictureBox_Click;
                     tableLayoutPanel1.Controls.Add(pictureBox, col, row);
-                   
                 }
             }
-
         }
 
         public void UpdateTablePictureBox(string i_Color, int i_Row, int i_Colomn)
@@ -106,35 +92,44 @@ namespace OthelloUI
                             break;
                         }
                 }
-            
             }
-
         }
 
+        protected virtual void OnFormGameClosing(object sender, FormClosingEventArgs e)
+        {
+            if (FormGameClosing != null)
+            {
+                FormGameClosing(sender, e);
+            }
+        }
 
-
-        public void PictureBox_Click(object sender, EventArgs e)
+        private void pictureBox_Click(object sender, EventArgs e)
         { 
             PictureBox mySender = sender as PictureBox;
-
-            TableLayoutPanelCellPosition position = tableLayoutPanel1.GetPositionFromControl(mySender);
-            int row = position.Row;
-            int col = position.Column;
-            //MessageBox.Show($"{row},{col}");
-            if(OnPictureBoxClicked != null)
+            if(mySender != null)
             {
-                OnPictureBoxClicked(row, col);
+                TableLayoutPanelCellPosition position = tableLayoutPanel1.GetPositionFromControl(mySender);
+                int row = position.Row;
+                int col = position.Column;
+                OnPictureBoxCliked(row, col);
             }
-            
-
         }
 
-        //public void OnClickPictureBox(object sender, EventArgs e)
-        //{
-        //    PictureBox_Click(sender,e);
-        //}
+        protected virtual void OnPictureBoxCliked(int i_Row, int i_Col)
+        {
+            if(PictureBoxClicked != null)
+            {
+                PictureBoxClicked(i_Row, i_Col);
+            }
+        }
+        
 
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+    //public void OnClickPictureBox(object sender, EventArgs e)
+    //{
+    //    PictureBox_Click(sender,e);
+    //}
+
+    private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
 
         }
