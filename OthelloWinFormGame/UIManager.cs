@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 
 
-namespace OthelloWinFormGame
+namespace OthelloUI
 {
     public class UIManager
     {

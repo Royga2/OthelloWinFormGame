@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OthelloLogic;
-using OthelloWinFormGame;
+using OthelloUI;
 using System.Windows.Forms;
 
 namespace OthelloController
@@ -64,7 +64,7 @@ namespace OthelloController
         {
             m_UIManager.FormGame = new FormGame(r_BoardSize);
             m_GameOn = true;
-            m_UIManager.FormGame.OnFormGameClosing -= FormGameClosingHandler;
+            m_UIManager.FormGame.OnFormGameClosing += FormGameClosingHandler;
             m_GameManager.IsGameOver += OnGameOver;
             m_UIManager.FormGame.OnPictureBoxClicked += OnClickMoveHandler;
             UpdateUIBoard();

@@ -43,9 +43,9 @@
       <Project>{8522d786-b1f7-4960-98aa-25677d6d3b3c}</Project>
       <Name>OthelloLogic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OthelloWinFormGame\OthelloWinFormGame.csproj">
+    <ProjectReference Include="..\OthelloWinFormGame\OthelloUI.csproj">
       <Project>{8af9bdc1-d54a-4bee-9c07-1564d607c038}</Project>
-      <Name>OthelloWinFormGame</Name>
+      <Name>OthelloUI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

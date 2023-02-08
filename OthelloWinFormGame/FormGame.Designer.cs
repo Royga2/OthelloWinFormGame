@@ -1,6 +1,6 @@
 ﻿
 using System.Windows.Forms;
-namespace OthelloWinFormGame
+namespace OthelloUI
 {
     partial class FormGame
     {

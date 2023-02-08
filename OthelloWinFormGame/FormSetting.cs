@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace OthelloWinFormGame
+namespace OthelloUI
 {
     public partial class FormSetting : Form
     {
