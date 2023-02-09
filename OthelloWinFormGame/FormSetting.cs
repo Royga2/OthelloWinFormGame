@@ -16,6 +16,7 @@ namespace OthelloUI
         public event FormClosingEventHandler FormSettingClosing;
         public event EventHandler GameModeButtonsClicked;
 
+
         public FormSetting()
         {
             InitializeComponent();
@@ -38,7 +39,7 @@ namespace OthelloUI
         {
             if (FormSettingClosing != null)
             {
-                    FormSettingClosing(sender, e);
+                FormSettingClosing.Invoke(sender, e);
             }
         }
 

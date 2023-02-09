@@ -99,23 +99,23 @@ namespace OthelloUI
         {
             if (FormGameClosing != null)
             {
-                FormGameClosing(sender, e);
+                FormGameClosing.Invoke(sender, e);
             }
         }
 
         private void pictureBox_Click(object sender, EventArgs e)
         { 
-            PictureBox mySender = sender as PictureBox;
-            if(mySender != null)
+            PictureBox clickedPictureBox = sender as PictureBox;
+            if(clickedPictureBox != null)
             {
-                TableLayoutPanelCellPosition position = tableLayoutPanel1.GetPositionFromControl(mySender);
+                TableLayoutPanelCellPosition position = tableLayoutPanel1.GetPositionFromControl(clickedPictureBox);
                 int row = position.Row;
                 int col = position.Column;
-                OnPictureBoxCliked(row, col);
+                OnPictureBoxClicked(row, col);
             }
         }
 
-        protected virtual void OnPictureBoxCliked(int i_Row, int i_Col)
+        protected virtual void OnPictureBoxClicked(int i_Row, int i_Col)
         {
             if(PictureBoxClicked != null)
             {
@@ -123,11 +123,6 @@ namespace OthelloUI
             }
         }
         
-
-    //public void OnClickPictureBox(object sender, EventArgs e)
-    //{
-    //    PictureBox_Click(sender,e);
-    //}
 
     private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
