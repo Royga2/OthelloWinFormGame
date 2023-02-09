@@ -31,23 +31,6 @@ namespace OthelloLogic
             initializedCells();
         }
 
-        public Board(string i_FirstPlayerName, string i_SecondPlayerName)
-        {
-            r_Cells = new Cell[r_BoardSize, r_BoardSize];
-            m_BlackCount = 2;
-            m_WhiteCount = 2;
-
-            for (int i = 0; i < r_BoardSize; i++)
-            {
-                for (int j = 0; j < r_BoardSize; j++)
-                {
-                    r_Cells[i, j] = new Cell(i, j);
-                }
-            }
-
-            initializedCells();
-        }
-
         private void initializedCells()
         {
             r_Cells[r_BoardSize / 2 - 1, r_BoardSize / 2 - 1].CurrentColor = Player.eColor.White;

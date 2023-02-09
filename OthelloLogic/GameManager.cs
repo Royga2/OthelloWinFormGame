@@ -26,6 +26,28 @@ namespace OthelloLogic
             m_PlayerLegalMove = findLegalMoves(m_CurrentPlayer);
         }
 
+        public Board GameBoard
+        {
+            get { return r_GameBoard; }
+        }
+
+        public Dictionary<Cell, List<Cell>> LegalMoves
+        {
+            get { return m_PlayerLegalMove; }
+        }
+
+        public Player CurrentPlayer
+        {
+            get { return m_CurrentPlayer; }
+            set { m_CurrentPlayer = value; }
+        }
+
+        public Dictionary<Cell, List<Cell>> PlayerLegalMove
+        {
+            get { return m_PlayerLegalMove; }
+            set { m_PlayerLegalMove = value; }
+        }
+
         protected virtual void OnGameOver(object sender, EventArgs e)
         {
             if (GameOver != null)
@@ -37,7 +59,7 @@ namespace OthelloLogic
 
         protected virtual void OnTurnSkipped(string i_Color)
         {
-            if(TurnSkipped != null)
+            if (TurnSkipped != null)
             {
                 TurnSkipped.Invoke(i_Color);
             }
@@ -48,19 +70,6 @@ namespace OthelloLogic
             if (CellColorChanged != null)
             {
                 CellColorChanged.Invoke(i_Color, i_Row, i_Col);
-            }
-        }
-
-        public Board GameBoard
-        {
-            get { return r_GameBoard; }
-        }
-
-        public Dictionary<Cell, List<Cell>> LegalMoves
-        {
-            get
-            {
-                return m_PlayerLegalMove;
             }
         }
 
@@ -81,24 +90,12 @@ namespace OthelloLogic
             return true;
         }
 
-        public Player CurrentPlayer
-        {
-            get { return m_CurrentPlayer; }
-            set { m_CurrentPlayer = value; }
-        }
-
-        public Dictionary<Cell, List<Cell>> PlayerLegalMove
-        {
-            get { return m_PlayerLegalMove; }
-            set { m_PlayerLegalMove = value; }
-        }
-
-        //TODO : NEED TO Fiz func to have only 1 return! 
         private List<Cell> capturbaleCellsInline(Cell i_Cell, Player i_Player, int i_RowOffSet, int i_ColOffSet)
         {
             List<Cell> capturbaleCells = new List<Cell>();
             int row = i_Cell.Row + i_RowOffSet;
             int col = i_Cell.Col + i_ColOffSet;
+            bool capturableCellsFound = false;
 
             while (isInsideBoard(row, col) && r_GameBoard.Cells[row, col].CurrentColor != Player.eColor.None)
             {
@@ -110,28 +107,38 @@ namespace OthelloLogic
                 }
                 else
                 {
-                    return capturbaleCells;
+                    capturableCellsFound = true;
+                    break;
                 }
             }
 
-            return new List<Cell>();
+            return capturableCellsFound ? capturbaleCells : new List<Cell>();
         }
-
+        
         public static Player.eColor OpponentPlayerColor(Player.eColor i_PlayerColor)
         {
+            Player.eColor opponentColor;
+
             switch (i_PlayerColor)
             {
                 case Player.eColor.White:
                     {
-                        return Player.eColor.Black;
+                        opponentColor = Player.eColor.Black;
+                        break;
                     }
                 case Player.eColor.Black:
                     {
-                        return Player.eColor.White;
+                        opponentColor = Player.eColor.White;
+                        break;
+                    }
+                default:
+                    {
+                        opponentColor = Player.eColor.None;
+                        break;
                     }
             }
 
-            return Player.eColor.None;
+            return opponentColor;
         }
 
         private List<Cell> capturbaleCells(Cell i_Cell, Player i_Player)

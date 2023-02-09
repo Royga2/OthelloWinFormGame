@@ -9,7 +9,7 @@ namespace OthelloController
     {
         public static void Main()
         {
-            Controller m_C = new Controller();
+            Controller gameController = new Controller();
         }
     }
 }
