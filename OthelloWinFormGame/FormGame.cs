@@ -15,7 +15,7 @@ namespace OthelloUI
     {
         private readonly int r_BoardSize;
         private const int k_PictureBoxSize = 50;
-        private TableLayoutPanel m_TableLayoutPanelforPictureBoxes;
+        private readonly TableLayoutPanel r_TableLayoutPanelForPictureBoxes;
         public event Action<int,int> PictureBoxClicked;
         public event FormClosingEventHandler FormGameClosing;
 
@@ -24,7 +24,7 @@ namespace OthelloUI
         {
             r_BoardSize = i_BoardSize;
             InitializeComponent();
-            this.m_TableLayoutPanelforPictureBoxes = new TableLayoutPanel();
+            this.r_TableLayoutPanelForPictureBoxes = new TableLayoutPanel();
             initializeTableLayoutPanel();
             FormClosing += OnFormGameClosing;
         }
@@ -39,26 +39,26 @@ namespace OthelloUI
             this.SuspendLayout();
             this.ClientSize = new System.Drawing.Size((r_BoardSize * 50), (r_BoardSize * 50));
             this.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
-            m_TableLayoutPanelforPictureBoxes.Size = new System.Drawing.Size((r_BoardSize * 50), (r_BoardSize * 50));
-            m_TableLayoutPanelforPictureBoxes.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
-            m_TableLayoutPanelforPictureBoxes.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            m_TableLayoutPanelforPictureBoxes.Name = "m_TableLayoutPanelforPictureBoxes";
-            m_TableLayoutPanelforPictureBoxes.TabIndex = 0;
-            m_TableLayoutPanelforPictureBoxes.Dock = DockStyle.None;
-            m_TableLayoutPanelforPictureBoxes.Height = this.Height - 82;
-            m_TableLayoutPanelforPictureBoxes.Width = this.Width - 60;
-            m_TableLayoutPanelforPictureBoxes.Location = new Point(20, 20);
-            m_TableLayoutPanelforPictureBoxes.ColumnCount = r_BoardSize;
-            m_TableLayoutPanelforPictureBoxes.RowCount = r_BoardSize;
-            m_TableLayoutPanelforPictureBoxes.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+            r_TableLayoutPanelForPictureBoxes.Size = new System.Drawing.Size((r_BoardSize * 50), (r_BoardSize * 50));
+            r_TableLayoutPanelForPictureBoxes.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            r_TableLayoutPanelForPictureBoxes.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
+            r_TableLayoutPanelForPictureBoxes.Name = "m_TableLayoutPanelforPictureBoxes";
+            r_TableLayoutPanelForPictureBoxes.TabIndex = 0;
+            r_TableLayoutPanelForPictureBoxes.Dock = DockStyle.None;
+            r_TableLayoutPanelForPictureBoxes.Height = this.Height - 82;
+            r_TableLayoutPanelForPictureBoxes.Width = this.Width - 60;
+            r_TableLayoutPanelForPictureBoxes.Location = new Point(20, 20);
+            r_TableLayoutPanelForPictureBoxes.ColumnCount = r_BoardSize;
+            r_TableLayoutPanelForPictureBoxes.RowCount = r_BoardSize;
+            r_TableLayoutPanelForPictureBoxes.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
 
             for (int i = 0; i < r_BoardSize; i++)
             {
-                m_TableLayoutPanelforPictureBoxes.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100.0f / r_BoardSize));
-                m_TableLayoutPanelforPictureBoxes.RowStyles.Add(new RowStyle(SizeType.Percent, 100.0f / r_BoardSize));
+                r_TableLayoutPanelForPictureBoxes.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100.0f / r_BoardSize));
+                r_TableLayoutPanelForPictureBoxes.RowStyles.Add(new RowStyle(SizeType.Percent, 100.0f / r_BoardSize));
             }
 
-            this.Controls.Add(this.m_TableLayoutPanelforPictureBoxes);
+            this.Controls.Add(this.r_TableLayoutPanelForPictureBoxes);
             for (int row = 0; row < r_BoardSize; row++)
             {
                 for (int col = 0; col < r_BoardSize; col++)
@@ -69,7 +69,7 @@ namespace OthelloUI
                     pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
                     pictureBox.Enabled = false;
                     pictureBox.Click += pictureBox_Click;
-                    m_TableLayoutPanelforPictureBoxes.Controls.Add(pictureBox, col, row);
+                    r_TableLayoutPanelForPictureBoxes.Controls.Add(pictureBox, col, row);
                 }
             }
             this.ResumeLayout(false);
@@ -77,7 +77,7 @@ namespace OthelloUI
 
         public void UpdateTablePictureBox(string i_Color, int i_Row, int i_Col)
         {
-            PictureBox currentPictureBox = m_TableLayoutPanelforPictureBoxes.GetControlFromPosition(i_Col, i_Row) as PictureBox;
+            PictureBox currentPictureBox = r_TableLayoutPanelForPictureBoxes.GetControlFromPosition(i_Col, i_Row) as PictureBox;
 
             if(currentPictureBox != null)
             {
@@ -116,9 +116,10 @@ namespace OthelloUI
         private void pictureBox_Click(object sender, EventArgs e)
         { 
             PictureBox clickedPictureBox = sender as PictureBox;
+
             if(clickedPictureBox != null)
             {
-                TableLayoutPanelCellPosition position = m_TableLayoutPanelforPictureBoxes.GetPositionFromControl(clickedPictureBox);
+                TableLayoutPanelCellPosition position = r_TableLayoutPanelForPictureBoxes.GetPositionFromControl(clickedPictureBox);
                 int row = position.Row;
                 int col = position.Column;
                 OnPictureBoxClicked(row, col);

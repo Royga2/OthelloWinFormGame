@@ -216,9 +216,8 @@ namespace OthelloLogic
             }
 
             string message = string.Format(
-                @"{0} you don't have any legal move your turn is skipped",
+                @"{0} don't have any legal move, the turn is skipped",
                 m_CurrentPlayer.PlayerName);
-            
             switchPlayer();
 
             if (m_PlayerLegalMove.Count == 0)

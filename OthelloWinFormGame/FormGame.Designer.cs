@@ -35,10 +35,11 @@ namespace OthelloUI
             // FormGame
             // 
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.Table;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(540, 498);
+            this.ClientSize = new System.Drawing.Size(720, 613);
+            this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "FormGame";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
