@@ -83,7 +83,7 @@ namespace OthelloLogic
             Player movePlayer = m_CurrentPlayer;
             List<Cell> capturbaleCells = m_PlayerLegalMove[i_Cell];
             r_GameBoard.Cells[i_Cell.Row, i_Cell.Col].CurrentColor = CurrentPlayer.PlayerColor;
-            CellColorChanged?.Invoke(m_CurrentPlayer.PlayerColor.ToString(), i_Cell.Row, i_Cell.Col);
+            OnCellColorChanged(m_CurrentPlayer.PlayerColor.ToString(), i_Cell.Row, i_Cell.Col);
             flipDiscs(capturbaleCells);
             r_GameBoard.UpdatesScore(movePlayer, capturbaleCells.Count);
             passTurn();
@@ -205,7 +205,6 @@ namespace OthelloLogic
             }
 
             return winnerName;
-
         }
 
         private void passTurn()
@@ -260,8 +259,6 @@ namespace OthelloLogic
             
             return legalMoves;
         }
-
-
     }
 }
 
