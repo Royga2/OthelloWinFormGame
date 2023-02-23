@@ -86,7 +86,6 @@ namespace OthelloUI
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Othello-Game Setting";
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.Othello_GameSetting_Load);
             this.ResumeLayout(false);
 
         }
