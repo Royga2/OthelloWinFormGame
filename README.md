@@ -1,2 +1,2 @@
 # Othello Game in WinForm
-OOP in C# & .net course final project
+it was built as Last OOP Project in C# .Net OOP Course
