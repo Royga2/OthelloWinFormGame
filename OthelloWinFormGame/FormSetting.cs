@@ -43,11 +43,6 @@ namespace OthelloUI
             }
         }
 
-        private void Othello_GameSetting_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void buttonBoardSize_Click(object sender, EventArgs e)
         {
             if (m_BoardSize < 12)

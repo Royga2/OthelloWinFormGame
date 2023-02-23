@@ -5,6 +5,7 @@ using System.Text;
 using OthelloLogic;
 using OthelloUI;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace OthelloController
 {
@@ -124,13 +125,17 @@ namespace OthelloController
 
             return currentPlayer;
         }
+
         private void pictureBox_Click(int i_Row, int i_Col)
         {
             playerMove(i_Row, i_Col);
+            m_FormGame.Update();
 
             if (m_GameManager.CurrentPlayer.IsComputer == true)
             {
+                Thread.Sleep(650);
                 cpuMove();
+                
             }
         }
 
@@ -159,6 +164,7 @@ namespace OthelloController
             string roundWinner = updateRoundWinner();
             string[] msgParams = getMsgParams(roundWinner);
             m_GameOn = false;
+            m_FormGame.OnGameOver();
             m_FormGame.FormGameClosing -= formGame_Closing;
             m_FormGame.PictureBoxClicked -= pictureBox_Click;
             m_GameManager.GameOver -= gameManager_GameOver;
@@ -206,6 +212,7 @@ namespace OthelloController
 
             if (result == DialogResult.OK)
             {
+                m_FormGame.Dispose();
                 startGame(m_BoardSize, m_IsComputer);
             }
             else if (result == DialogResult.Cancel)
@@ -242,9 +249,7 @@ namespace OthelloController
             string[] endOfRoundParams = endRoundAndReturnParamsForMsg();
             string endGameMessage = string.Format(@"{0} Won!! ({1}/{2}) ({3}/{4})
 Would you like another round?", endOfRoundParams);
-            m_FormGame.Dispose();
             gameOverMessageBox(endGameMessage);
-
         }
     }
 }
